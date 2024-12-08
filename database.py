@@ -17,7 +17,7 @@ class DatabaseHandler:
                            
                            username text PRIMARY KEY,
                            password text NOT NULL,
-                           CHECK ((length(password)>6 AND password LIKE %[0-9]%) AND (length(username)>3 AND length(username)<16))
+                           CHECK ((length(password)>6 AND password GLOB '*[0-9]*') AND (length(username)>3 AND length(username)<16))
 
                            );""")
         #execute previously designed sql statement, execute it in the database connection to store it in the intended place
@@ -45,3 +45,12 @@ class DatabaseHandler:
             #close the database connection
             return False
             #Signals user has not been created succefully when function is called
+
+
+    # def dropUsers(self):
+    #     connection = sql.connect(self.name)
+
+    #     connection.execute("""DROP TABLE user;""")
+        
+    #     connection.close()
+    #function used for testing

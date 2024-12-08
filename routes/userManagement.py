@@ -8,10 +8,10 @@ createUserBlueprint = Blueprint("createUser",__name__)
 #cretae a flask blueprint for the function to handle the link between the interface and database and the displaying of errors with the signup
 
 ### Routes ###
-@signupBlueprint.route("/signup")
+@signupBlueprint.route("/")
 #creates the route for the signup blueprint, allowing it to be accessed easily
 def signup():
-    return render_template("SignUp.html")
+    return render_template("Signup.html")
 #function to load the signup.html page
 
 @createUserBlueprint.route("/createUser", methods = ["post"])
@@ -48,7 +48,7 @@ def createUser():
     response = db.createUser(username,password)
     #calls the database function to attempt to add the user with the entered details into the database
     if response==True: 
-        return redirect("/")
+        return "Successs"
         #if user added successfully, redirect to login page
     else:
         return message
