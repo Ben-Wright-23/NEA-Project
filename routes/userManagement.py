@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect,session
 from database import DatabaseHandler
 
 ### Blueprints ###
@@ -11,8 +11,10 @@ createUserBlueprint = Blueprint("createUser",__name__)
 @signupBlueprint.route("/")
 #creates the route for the signup blueprint, allowing it to be accessed easily
 def signup():
-    return render_template("Signup.html")
-#function to load the signup.html page
+    errorMessage = session.get("errorMessage") if session.get("errorMessage") else ""
+    #if there is an error message from a prevous signup attempt, this is added to the signup page
+    return render_template("Signup.html", error=errorMessage)
+    #function loads the signup.html page, with the error message displayed when it is reloaded
 
 @createUserBlueprint.route("/createUser", methods = ["post"])
 #creates the route for the createUser blueprint, allowing it to be accessed easily. Post method as it allows data to be sent to the server side which is required as the user is entering data. 
@@ -26,31 +28,42 @@ def createUser():
     #takes the entered password part of the data sent from the signup page(the client) to the server, using the form input with id "password".
     repassword=request.form["repassword"]
     #takes the entered repassword part of the data sent from the signup page(the client) to the server, using the form input with id "repassword".
-    message=""
-    #creates a blank string called message that will serve as the error message
-
-    if len(username) >=16:
-        message = message + "Username too long, must be less than 16 Characters. "
-        #Checks the username is not too long, if it is, adds this to list of errors
-    if len(username) <= 3:
-        message = message + "Username too short, must be more than 3 Characters. "
-        #Checks the username is not too short, if it is, adds this to list of errors
-    if len(password) <= 6:
-        message = message + "Password too short, must be more than 6 Characters. "
-        #Checks the password is not too short, if it is, adds this to list of errors
-    if any(char.isdigit() for char in password) == False:
-        message = message + "Password does not contain a number. "
-        #Checks the password contains a number, if it doesn't, adds this to list of errors
-    if password != repassword:
-        message = message + "Passwords do not match. "
-        #Checks the passwords match, if they do not, adds this to list of errors
 
     response = db.createUser(username,password)
     #calls the database function to attempt to add the user with the entered details into the database
-    if response==True: 
-        return "Successs"
-        #if user added successfully, redirect to login page
+    if response==True:
+        #if data added to database successfully
+        session["errorMessage"] = ""
+        #There is no error message
+        return redirect(" ")
+        #redirect to login page
+    elif password != repassword:
+        session["errorMessage"] = "Passwords do not match"
+        #if passwords do not match, this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)
+    elif len(username) >=16:
+        session["errorMessage"] = "Username too long, must be less than 16 Characters."
+        #if the username is too long, this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)
+    elif len(username) <= 3:
+        session["errorMessage"] = "Username too short, must be more than 3 Characters. "
+        #if the username is too short, this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)
+    elif len(password) <= 6:
+        session["errorMessage"] = "Password too short, must be more than 6 Characters. "
+        #if the password is too short, this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)
+    elif any(char.isdigit() for char in password) == False:
+        session["errorMessage"] = "Password must include number"
+        #if the password does not contain a number, this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)
     else:
-        return message
-        #if user not added successfully return error message
-        
+        session["errorMessage"] = "This username is taken"
+        #if none of these errors have occured, the only possible issue is that the username is already taken, so this becomes the error message
+        return redirect("/")
+        #reloads signup page, with this error message displayed (done in the html)

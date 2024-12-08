@@ -46,7 +46,10 @@
         </div>
 
     </form>
-
+    <div>
+        {{session["errorMessage"]}}
+        <!-- displays error message that the userManagement.py defines, displays it between the signup confirm button and the login redirect button -->
+    </div>
     <p class="text-dark lead">Already have an account? <a class = "btn link-dark border ms-3" href = "   ">Login</a></p>
     <!-- Creates a way to switch to the login page once this page has been created. Has a left margin of 3 to seperate the button from the text slightly.-->
     </div>
