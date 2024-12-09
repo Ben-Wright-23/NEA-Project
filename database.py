@@ -54,3 +54,26 @@ class DatabaseHandler:
         
     #     connection.close()
     #function used for testing
+
+    def authenticateUser(self, username, password):
+        #define the function to make it easily accessable, pass in the username and password entered it can be checked if they exist in the database or not
+        connection = sql.connect(self.name)
+        #connect to the created database
+        cursor = connection.cursor()
+        #create a cursor to inspect one row of the table at a time
+        cursor.execute("""SELECT username 
+                       FROM user
+                       WHERE username = ? 
+                       AND password = ? ;""",
+                       (username,password))
+        #execute previously designed sql statement, execute it in the cursor so the data can be fetched
+        result = cursor.fetchone()
+        #if the cursor has found a match for the inputted details, it stores it as the result
+        connection.close()
+        #close the database connection
+        if result != None:
+            return True
+            #if the cursor successfully fetched a row with matching details, the function returns True to signify there is an account with the details the user entered
+        else:
+            return False
+            #if cursor could not find an account with matching details to what the user entered, the function returns False
