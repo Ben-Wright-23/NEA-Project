@@ -5,7 +5,9 @@ from database import DatabaseHandler
 signupBlueprint = Blueprint("signup",__name__)
 #create a flask blueprint for the function to load the signup page
 createUserBlueprint = Blueprint("createUser",__name__)
-#cretae a flask blueprint for the function to handle the link between the interface and database and the displaying of errors with the signup
+#create a flask blueprint for the function to handle the link between the interface and database and the displaying of errors with the signup
+authenticateUserBlueprint = Blueprint("authenticateUser",__name__)
+#create a flask blueprint for the function to check the entered details are in the database and to handle redirecting the user depending on the result
 
 ### Routes ###
 @signupBlueprint.route("/")
@@ -67,3 +69,24 @@ def createUser():
         #if none of these errors have occured, the only possible issue is that the username is already taken, so this becomes the error message
         return redirect("/")
         #reloads signup page, with this error message displayed (done in the html)
+
+@authenticateUserBlueprint.route("/authenticate", methods = ["post"])
+#creates the route for the authenticateUser blueprint, allowing it to be directed to easily. Post method as it allows data to be sent to the server side which is required as the user is entering data. 
+def authenticateUser():
+    #defines function
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database and where the entities will be stored
+    username = request.form["username"]
+    #takes the entered username part of the data sent from the login page(the client) to the server, using the form input with id "username".
+    password = request.form["password"]
+    #takes the entered password part of the data sent from the login page(the client) to the server, using the form input with id "password".
+
+    if db.authenticateUser(username, password) == True:
+        #if an account is found that mathes the details the user has entered
+        session["currentUser"] = username
+        #creates a session for the current user, using their username for this as it is unique to their account
+        return redirect("/dashboard")
+        #redirects the user to their dashboard within their account
+    else:
+        return redirect("/")
+        #otherwise reload the login page if an account with matching details was not found
