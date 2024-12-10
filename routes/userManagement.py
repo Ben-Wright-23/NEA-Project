@@ -10,7 +10,7 @@ authenticateUserBlueprint = Blueprint("authenticateUser",__name__)
 #create a flask blueprint for the function to check the entered details are in the database and to handle redirecting the user depending on the result
 
 ### Routes ###
-@signupBlueprint.route("/")
+@signupBlueprint.route("/signup")
 #creates the route for the signup blueprint, allowing it to be accessed easily
 def signup():
     errorMessage = session.get("errorMessage") if session.get("errorMessage") else ""
@@ -37,37 +37,37 @@ def createUser():
         #if data added to database successfully
         session["errorMessage"] = ""
         #There is no error message
-        return redirect(" ")
+        return redirect("/")
         #redirect to login page
     elif password != repassword:
         session["errorMessage"] = "Passwords do not match"
         #if passwords do not match, this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
     elif len(username) >=16:
         session["errorMessage"] = "Username too long, must be less than 16 Characters."
         #if the username is too long, this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
     elif len(username) <= 3:
         session["errorMessage"] = "Username too short, must be more than 3 Characters. "
         #if the username is too short, this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
     elif len(password) <= 6:
         session["errorMessage"] = "Password too short, must be more than 6 Characters. "
         #if the password is too short, this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
     elif any(char.isdigit() for char in password) == False:
         session["errorMessage"] = "Password must include number"
         #if the password does not contain a number, this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
     else:
         session["errorMessage"] = "This username is taken"
         #if none of these errors have occured, the only possible issue is that the username is already taken, so this becomes the error message
-        return redirect("/")
+        return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
 
 @authenticateUserBlueprint.route("/authenticate", methods = ["post"])
