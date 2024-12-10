@@ -1,7 +1,8 @@
 ### Imports ###
 from flask import Flask
 from database import DatabaseHandler
-from routes.userManagement import signupBlueprint, createUserBlueprint
+from routes.home import homeBlueprint
+from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint
 
 
 app = Flask(__name__)
@@ -23,6 +24,11 @@ app.register_blueprint(signupBlueprint)
 #registers the signupBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(createUserBlueprint)
 #registers the createUserBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(homeBlueprint)
+#registers the homeBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(authenticateUserBlueprint)
+#registers the authenticateUserBlueprint in the Flask instance so it can be used when running the program in the web framework
+
 
 
 
