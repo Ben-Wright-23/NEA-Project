@@ -10,6 +10,8 @@ authenticateUserBlueprint = Blueprint("authenticateUser",__name__)
 #create a flask blueprint for the function to check the entered details are in the database and to handle redirecting the user depending on the result
 deleteAccountBlueprint = Blueprint("deleteAccount",__name__)
 #create a flask blueprint for the function to load the account deletion confirmation page
+deleteUserBlueprint = Blueprint("deleteUser",__name__)
+#create a flask blueprint for the function to handle deleting the user depending on what they enter in the username confirmation
 
 ### Routes ###
 @signupBlueprint.route("/signup")
@@ -102,3 +104,30 @@ def deleteAccount():
     #If the accountDeletionError session contains something, this becomes the accountDeletionError, otherwise the accountDeletionError is blank
     return render_template("deleteAccount.html", error = accountDeletionError)
     #loads the deleteAccount.html page, with the error being sent with it being the accountDeletionError
+
+
+
+@deleteUserBlueprint.route("/deleteUser")
+#creates route for the deleteUser blueprint, so it can be accessed by other parts of the program easily
+def deleteUser():
+    #defines function
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database and where the entities will be stored
+    username = request.form["username"]
+    #takes the entered username part of the data sent from the delete account page(the client) to the server, using the form input with id "username".
+    if username == session["currentUser"]:
+        #if the username entered by the user is the same as the current user's username
+        session["accountDeletionError"] = ""
+        #there is no error with the account deletion so the error is set to nothing
+        db.deleteUser(session["currentUser"])
+        #call the database function to remove the account with the current user's username
+        return redirect("/")
+        #redirect the user to the login page
+    else:
+        #if the entered username does not match the current user's username
+        session["accountDeletionError"] = "This is not your username"
+        #there is an error with the account deletion so the error is set to a suitable message
+        return redirect("/deleteAccount")
+        #reload the delete account page
+
+        
