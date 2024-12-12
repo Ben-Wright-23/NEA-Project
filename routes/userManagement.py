@@ -8,6 +8,8 @@ createUserBlueprint = Blueprint("createUser",__name__)
 #create a flask blueprint for the function to handle the link between the interface and database and the displaying of errors with the signup
 authenticateUserBlueprint = Blueprint("authenticateUser",__name__)
 #create a flask blueprint for the function to check the entered details are in the database and to handle redirecting the user depending on the result
+deleteAccountBlueprint = Blueprint("deleteAccount",__name__)
+#create a flask blueprint for the function to load the account deletion confirmation page
 
 ### Routes ###
 @signupBlueprint.route("/signup")
@@ -90,3 +92,13 @@ def authenticateUser():
     else:
         return redirect("/")
         #otherwise reload the login page if an account with matching details was not found
+
+
+@deleteAccountBlueprint.route("/deleteAccount")
+#creates route for the deleteAccount blueprint, so it can be redirected to easily.
+def deleteAccount():
+    #defines function
+    accountDeletionError = session.get("accountDeletionError") if session.get("accountDeletionError") else ""
+    #If the accountDeletionError session contains something, this becomes the accountDeletionError, otherwise the accountDeletionError is blank
+    return render_template("deleteAccount.html", error = accountDeletionError)
+    #loads the deleteAccount.html page, with the error being sent with it being the accountDeletionError
