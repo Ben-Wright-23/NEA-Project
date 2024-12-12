@@ -77,3 +77,17 @@ class DatabaseHandler:
         else:
             return False
             #if cursor could not find an account with matching details to what the user entered, the function returns False
+            
+
+    def deleteUser(self,currentUser):
+        #define the function
+        connection = sql.connect(self.name)
+        #Connect to the database
+        connection.execute("""DELETE FROM user
+                        WHERE username = ? ;""",
+                        (currentUser))
+        #execute previously designed sql statement on the database connection
+        connection.commit()
+        #commit the changes to the database so they are stored permaneantly
+        connection.close()
+        #close the database connection
