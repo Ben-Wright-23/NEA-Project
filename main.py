@@ -2,7 +2,7 @@
 from flask import Flask
 from database import DatabaseHandler
 from routes.home import homeBlueprint
-from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint
+from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
 
 
 app = Flask(__name__)
@@ -32,7 +32,8 @@ app.register_blueprint(deleteAccountBlueprint)
 #registers the deleteAccountBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(deleteUserBlueprint)
 #registers the deleteUserBlueprint in the Flask instance so it can be used when running the program in the web framework
-
+app.register_blueprint(logoutBlueprint)
+#registers the logoutBlueprint in the Flask instance so it can be used when running the program in the web framework
 
 
 

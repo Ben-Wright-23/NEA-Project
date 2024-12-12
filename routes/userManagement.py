@@ -12,6 +12,8 @@ deleteAccountBlueprint = Blueprint("deleteAccount",__name__)
 #create a flask blueprint for the function to load the account deletion confirmation page
 deleteUserBlueprint = Blueprint("deleteUser",__name__)
 #create a flask blueprint for the function to handle deleting the user depending on what they enter in the username confirmation
+logoutBlueprint = Blueprint("logout",__name__)
+#create a flask blueprint for the function to log the user out 
 
 ### Routes ###
 @signupBlueprint.route("/signup")
@@ -130,4 +132,11 @@ def deleteUser():
         return redirect("/deleteAccount")
         #reload the delete account page
 
-        
+@logoutBlueprint.route("/logout")
+#creates route for the logout blueprint, so it can be accessed by other parts of the program easily
+def logout():
+    #defines function
+    session.clear()
+    #clears all sessions, removing any data being help about the current user
+    return redirect("/")
+    #redirects the user to the login page
