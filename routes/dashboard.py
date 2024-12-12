@@ -8,5 +8,5 @@ dashboardBlueprint = Blueprint("dashboard",__name__)
 #routes the dashboardBlueprint with /dashboard so other areas of the program can access the blueprint
 def dashboard():
     #defines the function
-    return render_template("dashboard.html")
+    return render_template("Dashboard.html")
     #loads the dashboard.html page 
