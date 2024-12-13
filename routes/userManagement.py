@@ -109,8 +109,9 @@ def deleteAccount():
 
 
 
-@deleteUserBlueprint.route("/deleteUser")
-#creates route for the deleteUser blueprint, so it can be accessed by other parts of the program easily
+@deleteUserBlueprint.route("/deleteUser", methods = ["post"])
+#creates route for the deleteUser blueprint, so it can be accessed by other parts of the program easily. 
+#Post method as handling requests from client to server
 def deleteUser():
     #defines function
     db = DatabaseHandler("appData.db")

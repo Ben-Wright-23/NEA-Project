@@ -85,7 +85,7 @@ class DatabaseHandler:
         #Connect to the database
         connection.execute("""DELETE FROM user
                         WHERE username = ? ;""",
-                        (currentUser))
+                        [currentUser])
         #execute previously designed sql statement on the database connection
         connection.commit()
         #commit the changes to the database so they are stored permaneantly
