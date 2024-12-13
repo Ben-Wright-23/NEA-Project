@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template
+from flask import Blueprint,render_template,session
 
 
 dashboardBlueprint = Blueprint("dashboard",__name__)
@@ -8,5 +8,7 @@ dashboardBlueprint = Blueprint("dashboard",__name__)
 #routes the dashboardBlueprint with /dashboard so other areas of the program can access the blueprint
 def dashboard():
     #defines the function
+    session["accountDeletionError"] = ""
+    #clears the error with account deletion when leaving that page so it doesn't reappear when the delete account page is reloaded
     return render_template("Dashboard.html")
     #loads the dashboard.html page 
