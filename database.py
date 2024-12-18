@@ -17,7 +17,7 @@ class DatabaseHandler:
                            
                            username text PRIMARY KEY,
                            password text NOT NULL,
-                           CHECK ((length(password)>6 AND password GLOB '*[0-9]*') AND (length(username)>3 AND length(username)<16))
+                           CHECK ((length(password)>7 AND password GLOB '*[0-9]*') AND (length(username)>3 AND length(username)<16))
 
                            );""")
         #execute previously designed sql statement, execute it in the database connection to store it in the intended place

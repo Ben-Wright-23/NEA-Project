@@ -60,7 +60,7 @@ def createUser():
         #if the username is too short, this becomes the error message
         return redirect("/signup")
         #reloads signup page, with this error message displayed (done in the html)
-    elif len(password) <= 6:
+    elif len(password) <= 7:
         session["errorMessage"] = "Password too short, must be more than 6 Characters. "
         #if the password is too short, this becomes the error message
         return redirect("/signup")
