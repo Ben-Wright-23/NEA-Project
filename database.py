@@ -44,7 +44,7 @@ class DatabaseHandler:
             connection.close()
             #close the database connection
             return False
-            #Signals user has not been created succefully when function is called
+            #Signals user has not been created successfully when function is called
 
 
     # def dropUsers(self):
@@ -91,3 +91,44 @@ class DatabaseHandler:
         #commit the changes to the database so they are stored permaneantly
         connection.close()
         #close the database connection
+
+
+    def createTournamentTables(self):
+        #define the function
+        connection = sql.connect(self.name)
+        #Connect to the database
+        connection.execute("""CREATE TABLE IF NOT EXISTS tournament(
+                    tournamentName text PRIMARY KEY,
+                    username text FOREIGN KEY REFERENCES user(username),
+                    numTeams integer NOT NULL,
+                    CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
+                            );""")
+        #execute previously designed sql statement on the database connection
+        connection.close()
+        #close the database connection
+
+    def createTournament(self, tournamentName, username, numTeams):
+        #define the function
+        connection = sql.connect(self.name)
+        #Connect to the database
+        try:
+            #use try except loop to be able to handle errors
+            connection.execute("""INSERT INTO tournament
+                VALUES (?,?,?)""",
+                (tournamentName,username,numTeams)
+                )
+            #execute previously designed sql statement on the database connection
+            connection.commit()
+            #commit the changes to the database so they are stored permaneantly
+            connection.close()
+            #close the database connection
+            return True
+            #Shows that the tournament has been added successfully when function called
+        except:
+            #reverts to this if validation requirements not met  
+            connection.close()
+            #close the database connection
+            return False
+            #Signals tournament has not been created successfully when function is called
+
+            
