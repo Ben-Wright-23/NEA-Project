@@ -99,8 +99,9 @@ class DatabaseHandler:
         #Connect to the database
         connection.execute("""CREATE TABLE IF NOT EXISTS tournament(
                     tournamentName text PRIMARY KEY,
-                    username text FOREIGN KEY REFERENCES user(username),
+                    username text,
                     numTeams integer NOT NULL,
+                    FOREIGN KEY (username) REFERENCES user(username)
                     CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
                             );""")
         #execute previously designed sql statement on the database connection

@@ -18,8 +18,8 @@ def creationForm():
     #loads the creationForm.html page, with the error message displayed when it is reloaded
 
 
-@tournamentCreationBlueprint.route("/tournamentCreation")
-#creates the route for the tournamentCreation blueprint, allowing it to be accessed easily
+@tournamentCreationBlueprint.route("/tournamentCreation", methods = ["POST"])
+#creates the route for the tournamentCreation blueprint, allowing it to be accessed easily. Post method allows it to make server side changes
 def tournamentCreation():
     #defines function to load creationForm page
     db = DatabaseHandler("appData.db")
