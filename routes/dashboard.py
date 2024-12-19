@@ -10,5 +10,7 @@ def dashboard():
     #defines the function
     session["accountDeletionError"] = ""
     #clears the error with account deletion when leaving that page so it doesn't reappear when the delete account page is reloaded
+    session["tournamentCreationError"] = ""
+    # clears the error with tournament creation when leaving loading the dashboard so it doesn't reappear when the tournament creation page is reloaded
     return render_template("Dashboard.html")
     #loads the dashboard.html page 
