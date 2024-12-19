@@ -4,6 +4,7 @@ from database import DatabaseHandler
 from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
 from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
+from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint
 
 
 app = Flask(__name__)
@@ -39,8 +40,10 @@ app.register_blueprint(logoutBlueprint)
 #registers the logoutBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(dashboardBlueprint)
 #registers the dashboardBlueprint in the Flask instance so it can be used when running the program in the web framework
-
-
+app.register_blueprint(creationFormBlueprint)
+#registers the creationForm in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(tournamentCreationBlueprint)
+#registers the tournamentCreation in the Flask instance so it can be used when running the program in the web framework
 
 
 app.run(debug = True)
