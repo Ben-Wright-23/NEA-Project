@@ -4,7 +4,7 @@ from database import DatabaseHandler
 from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
 from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
-from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint
+from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint
 
 
 app = Flask(__name__)
@@ -23,7 +23,6 @@ db.createTournamentTables()
 #creates the tournament entity, only run once then line removed
 
 ### Routing ###
-
 app.register_blueprint(signupBlueprint)
 #registers the signupBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(createUserBlueprint)
@@ -44,6 +43,13 @@ app.register_blueprint(creationFormBlueprint)
 #registers the creationForm in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(tournamentCreationBlueprint)
 #registers the tournamentCreation in the Flask instance so it can be used when running the program in the web framework
-
+app.register_blueprint(teamsInputPageBlueprint)
+#registers the teamsInputPageBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(teamsInputBlueprint)
+#registers the teamsInputBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(teamDeletionBlueprint)
+#registers the teamDeletionBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(clearTeamsBlueprint)
+#registers the clearTeamsBlueprint in the Flask instance so it can be used when running the program in the web framework
 
 app.run(debug = True)
