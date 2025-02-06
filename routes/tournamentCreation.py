@@ -19,6 +19,8 @@ clearTeamsBlueprint = Blueprint("clearTeams",__name__)
 #creates the route for the creationForm blueprint, allowing it to be accessed easily
 def creationForm():
     #defines function to load creationForm page
+    session["teamInputError"] = ""
+    #resets any errors possibly still being displayed from previous tournaments
     Error = session.get("tournamentCreationError") if session.get("tournamentCreationError") else ""
     #produces the error with the tournament creation if there is one
     #if no error, no error is passed to the interface
@@ -30,6 +32,10 @@ def creationForm():
 #creates the route for the tournamentCreation blueprint, allowing it to be accessed easily. Post method allows it to make server side changes
 def tournamentCreation():
     #defines function to load creationForm page
+    session["Teams"] = ""
+    #Resets the teams list displayed to the user from any previous tournaments
+    teams.clear()
+    #removes all teams from the back end so there is no carry over from other tournaments
     db = DatabaseHandler("appData.db")
     #creates a link to the database, where appData.db is the database and where the entities will be stored
     tournamentName = request.form["tournamentName"]
@@ -43,8 +49,8 @@ def tournamentCreation():
         #if the tournament is created successfully
         session["tournamentCreationError"] = ""
         #there is no error
-        return redirect("/tournamentView")
-        #redirect to the in tournament view as tournament has been created
+        return redirect("/teamsInputPage")
+        #redirect to the in teams input page to continue creating the tournament
     elif len(tournamentName)<=4:
         session["tournamentCreationError"] = "Tournament name too short, must be over 4 characters"
         #if length of tournament name too short, this becomes error message
@@ -82,6 +88,14 @@ def teamsInput():
         #creates condition to check there is less teams in the list/tournament than the user previously specified was how many teams their tournament would contain
         newTeamName = request.form["teamNames"]
         #takes the entered team name sent from the teamsInput page(the client) to the server, using the form input with id "teamNames".
+        for i in teams:
+            #cycles through all team names in the list of team names
+            if newTeamName==i:
+                #compares the new team name with all team names currently in the list
+                session["teamInputError"] = "Teams must have unique name"
+                #If there is a matching team name in the list, there is an error with the team input so this session is set to this message to be displayed to the user
+                return redirect("/teamsInputPage")
+                #reloads the team input page with the error displayed
         if newTeamName != "":
             #Checks the user has entered a value for the team name
             teams.append(newTeamName)
