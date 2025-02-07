@@ -23,6 +23,8 @@ def creationForm():
     #defines function to load creationForm page
     session["teamInputError"] = ""
     #resets any errors possibly still being displayed from previous tournaments
+    session["teamDeletionError"] = ""
+    #resets any team deletion errors possibly still being displayed from previous tournaments
     Error = session.get("tournamentCreationError") if session.get("tournamentCreationError") else ""
     #produces the error with the tournament creation if there is one
     #if no error, no error is passed to the interface
