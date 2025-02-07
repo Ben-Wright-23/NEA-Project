@@ -14,6 +14,8 @@ teamDeletionBlueprint = Blueprint("teamDeletion",__name__)
 #create a flask blueprint for the function to individually delete teams depending on the users input
 clearTeamsBlueprint = Blueprint("clearTeams",__name__)
 #create a flask blueprint for the function to remove all teams from the tournament
+bracketViewBlueprint = Blueprint("bracketView",__name__)
+#create a flask blueprint for the function to load the bracket viewing page
 
 @creationFormBlueprint.route("/creationForm")
 #creates the route for the creationForm blueprint, allowing it to be accessed easily
@@ -142,7 +144,7 @@ def teamDeletion():
 @clearTeamsBlueprint.route("/clearTeams", methods = ["POST"])
 #creates the route for the clearTeams blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def clearTeams():
-    #defines clearTeams function for the team deletion blueprint
+    #defines clearTeams function for the clearTeams blueprint
     teams.clear()
     #Clears all teams from the team list
     session["Teams"] = teams
@@ -150,3 +152,9 @@ def clearTeams():
     return redirect("/teamsInputPage")
     #Reloads the teamsInput page with all teams removed from the list
 
+@bracketViewBlueprint.route("/bracketView")
+#creates the route for the bracketView blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
+def bracketView():
+    #defines bracket view function for the bracketView blueprint
+    return render_template("bracketView.html")
+    #Loads the bracketView html page
