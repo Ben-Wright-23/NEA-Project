@@ -57,6 +57,10 @@ def tournamentCreation():
     #numTeams is required multiple times through this file so making it a global variable is a suitable method to allow other functions to access it
     numTeams = request.form["numTeams"]
     #takes the entered number of teams part of the data sent from the creationForm page(the client) to the server, using the form input with id "numTeams".
+    numTeams = int(numTeams)
+    #numTeams made an integer
+    session["Tournament"] = tournamentName
+    #makes a session for the current tournament's name
 
     if db.createTournament(tournamentName,session["currentUser"],numTeams,None)==True:
         #if the tournament is created successfully
@@ -169,10 +173,18 @@ def clearTeams():
 #creates the route for the bracketView blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def bracketView():
     #defines bracket view function for the bracketView blueprint
-    generateBrackets()
-    # when the page is loaded, this generates the brackets annd adds them to the database
-    return render_template("bracketView.html", brackets = bracketDisplay(), numberOfRounds = int(math.log2(numTeams)))
-    #Loads the bracketView html page with the brackets and number of rounds passed in
+    if len(teams)< numTeams:
+        #if the user entered less teams to the teams list than they specified the number of teams in their tournament would be:
+        session["teamInputError"] = "Not enough teams entered" 
+        #there is a team input error that not enough teams have been entered
+        return redirect("/teamsInputPage")
+        #reload the team input page with this error displayed
+    else:
+        #otherwise, there is no error
+        generateBrackets()
+        # when the page is loaded, this generates the brackets annd adds them to the database
+        return render_template("bracketView.html", brackets = bracketDisplay(), numberOfRounds = int(math.log2(numTeams)))
+        #Loads the bracketView html page with the brackets and number of rounds passed in
 
 @bracketGenerationBlueprint.route("/bracketGeneration")
 #creates the route for the bracketGeneration blueprint, allowing it to be accessed easily.

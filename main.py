@@ -19,7 +19,7 @@ db = DatabaseHandler("appData.db")
 # db.dropUsers()
 #Drops user table, used for testing
 
-db.createTournamentTables()
+# db.createTournamentTables()
 #creates the tournament entity, only run once then line removed
 
 ### Routing ###
