@@ -22,6 +22,9 @@ bracketGenerationBlueprint = Blueprint("bracketGeneration",__name__)
 #create a flask blueprint for the function create the bracket dictionary and add it to the database with its corresponding tournament
 bracketDisplayBlueprint = Blueprint("bracketDisplay",__name__)
 #create a flask blueprint for the function to retreive the bracket from the database
+tournamentDashboardBlueprint = Blueprint("tournamentDashboard",__name__)
+#create a flask blueprint for the function to load the tournament dashboard
+
 
 @creationFormBlueprint.route("/creationForm")
 #creates the route for the creationForm blueprint, allowing it to be accessed easily
@@ -230,3 +233,13 @@ def bracketDisplay():
     #returns the dictionary version of the brackets
 
     
+@tournamentDashboardBlueprint.route("/tournamentDashboard")
+#creates the route for the tournamentDashboard blueprint, allowing it to be accessed easily.
+def tournamentDashboard():
+    #defines tournamentDashboard function for the tournamentDashboard blueprint
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    db.updateActiveTrue(session["Tournament"])
+    #updates the active field to be true in the database for the current tournament signifying the tournament has started
+    return render_template("tournamentDashboard.html")
+    #loads the tournamentDashboard html page 

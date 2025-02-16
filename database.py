@@ -178,3 +178,28 @@ class DatabaseHandler:
             #close the connection to the database
             return results
             #return the whole record of the user's current tournament
+
+
+    def updateActiveTrue(self, tournamentName):
+        #defines update active function
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            connection.execute("""UPDATE tournament 
+                               SET active = ?
+                               WHERE tournamentName = ?
+                               """,("true", tournamentName))
+            #exectute the previously designed SQL statement
+            connection.commit()
+            #commit the changes to the database
+            connection.close()
+            #close the connection to the database
+            return True
+            #if no errors have occured, the function will return true
+        except:
+            connection.close()
+            #close the connection to the database
+            return False
+            #if there has been an error, the function returns false
+
+            

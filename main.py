@@ -4,7 +4,7 @@ from database import DatabaseHandler
 from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
 from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
-from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint
+from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint, tournamentDashboardBlueprint
 
 
 app = Flask(__name__)
@@ -57,5 +57,7 @@ app.register_blueprint(bracketGenerationBlueprint)
 #registers the bracketGenerationBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(bracketDisplayBlueprint)
 #registers the bracketDisplayBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(tournamentDashboardBlueprint)
+#registers the tournamentDashboardBlueprint in the Flask instance so it can be used when running the program in the web framework
 
 app.run(debug = True)
