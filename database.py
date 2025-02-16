@@ -101,24 +101,28 @@ class DatabaseHandler:
                     tournamentName text PRIMARY KEY,
                     username text,
                     numTeams integer NOT NULL,
+                    active text,
+                    bracket text,
                     FOREIGN KEY (username) REFERENCES user(username)
                     CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
                             );""")
         #execute previously designed sql statement on the database connection
+        #active and bracket fields added to the database
         connection.close()
         #close the database connection
 
-    def createTournament(self, tournamentName, username, numTeams):
+    def createTournament(self, tournamentName, username, numTeams, bracket):
         #define the function
         connection = sql.connect(self.name)
         #Connect to the database
         try:
             #use try except loop to be able to handle errors
             connection.execute("""INSERT INTO tournament
-                VALUES (?,?,?)""",
-                (tournamentName,username,numTeams)
+                VALUES (?,?,?,false,?)""",
+                (tournamentName,username,numTeams,bracket)
                 )
             #execute previously designed sql statement on the database connection
+            #whn adding the active and bracket fields, this SQL had to be updated too to allow data for these fields to be added to the tournament 
             connection.commit()
             #commit the changes to the database so they are stored permaneantly
             connection.close()
@@ -132,4 +136,45 @@ class DatabaseHandler:
             return False
             #Signals tournament has not been created successfully when function is called
 
+    def addBrackets(self, bracket, tournamentName):
+        #defines add bracket function
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            connection.execute("""UPDATE tournament 
+                               SET bracket = ?
+                               WHERE tournamentName = ?
+                               """,(bracket, tournamentName))
+            #execute the previously designed SQL statement
+            connection.commit()
+            #commit the changes to the database
+            connection.close()
+            #close the connection to the database
+            return True
+            #if there have been no errors, the function will return True
+        except:
+            connection.close()
+            return False
+            #if gthere was an error in the function, the connection will be closed and the function will return False
             
+
+    def getBrackets(self,tournamentName):
+        #defines get bracket function
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            cursor = connection.cursor()
+            #create a cursor to inspect one row of the table at a time
+            cursor.execute("""SELECT * FROM tournament WHERE tournamentName = ?;""",[tournamentName])
+            #exectute the previously designed SQL statement using the cursor to check through the records
+            results = cursor.fetchone()
+            #fetch the record with the current tournament's name
+        except Exception as e:
+            print(e)
+            results = {}
+            #if there has been an error in the "try", this error is printed and there is no record to be returned
+        finally:
+            connection.close()
+            #close the connection to the database
+            return results
+            #return the whole record of the user's current tournament
