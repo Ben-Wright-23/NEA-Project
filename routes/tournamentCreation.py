@@ -1,6 +1,8 @@
 from flask import Blueprint,render_template, session, request, redirect
 from database import DatabaseHandler
 # import database and required flask modules
+import math
+#import math module so log2 can be performed for number of rounds
 
 creationFormBlueprint = Blueprint("creationForm",__name__)
 #create a flask blueprint for the function to load the tournamentCreation page
@@ -16,6 +18,10 @@ clearTeamsBlueprint = Blueprint("clearTeams",__name__)
 #create a flask blueprint for the function to remove all teams from the tournament
 bracketViewBlueprint = Blueprint("bracketView",__name__)
 #create a flask blueprint for the function to load the bracket viewing page
+bracketGenerationBlueprint = Blueprint("bracketGeneration",__name__)
+#create a flask blueprint for the function create the bracket dictionary and add it to the database with its corresponding tournament
+bracketDisplayBlueprint = Blueprint("bracketDisplay",__name__)
+#create a flask blueprint for the function to retreive the bracket from the database
 
 @creationFormBlueprint.route("/creationForm")
 #creates the route for the creationForm blueprint, allowing it to be accessed easily
@@ -49,8 +55,9 @@ def tournamentCreation():
     numTeams = request.form["numTeams"]
     #takes the entered number of teams part of the data sent from the creationForm page(the client) to the server, using the form input with id "numTeams".
 
-    if db.createTournament(tournamentName,session["currentUser"],numTeams)==True:
+    if db.createTournament(tournamentName,session["currentUser"],numTeams,None)==True:
         #if the tournament is created successfully
+        #None added to act as a placeholder for the bracket to be added later
         session["tournamentCreationError"] = ""
         #there is no error
         return redirect("/teamsInputPage")
@@ -154,9 +161,72 @@ def clearTeams():
     return redirect("/teamsInputPage")
     #Reloads the teamsInput page with all teams removed from the list
 
+
 @bracketViewBlueprint.route("/bracketView")
 #creates the route for the bracketView blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def bracketView():
     #defines bracket view function for the bracketView blueprint
-    return render_template("bracketView.html")
-    #Loads the bracketView html page
+    generateBrackets()
+    # when the page is loaded, this generates the brackets annd adds them to the database
+    return render_template("bracketView.html", brackets = bracketDisplay(), numberOfRounds = int(math.log2(numTeams)))
+    #Loads the bracketView html page with the brackets and number of rounds passed in
+
+@bracketGenerationBlueprint.route("/bracketGeneration")
+#creates the route for the bracketGeneration blueprint, allowing it to be accessed easily.
+def generateBrackets():
+    #defines generateBrackets function for the bracketGeneration blueprint
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database and where the entities will be stored
+    teamsList = teams
+    #creates a copy of the "teams" list to be used within the function as otherwise teams would be changed and not be able to be used in other functions
+    numberOfTeams = numTeams
+    #creates a copy of the numTeams to be used in the function as otherwise numTeams would be changed and not be able to be used in other functions
+    numRounds = int(math.log2(numberOfTeams))
+    #sets the number of rounds to be log2 of the number of teams as this is how a the number of rounds in a bracket tournament like this is determined
+    bracket = {}
+    #creates an initially blank dictionary for the bracket
+
+    for i in range(numRounds):
+        #for however many rounds there are:
+        round = {}
+        #creates a blank dictionary for each round in the tournamnet
+        bracket[i+1]= round
+        #inputs each round dictionary into the bracket dictionary, assigning the first round with number 1 and so on
+        numMatches = numberOfTeams // 2
+        #each match has 2 teams so number of matches is half the number of teams
+        for i in range(numMatches):
+            round[i+1] = {1:None, 2:None}
+            #for however many matches there will be in each round, this sets the match in each round to this match dictionary, containing team 1 and team 2 which have not yet been assigned
+        numberOfTeams = numberOfTeams // 2
+        #halfs the number of teams each time a round is made, as half teams will be eliminated each round
+
+    for i in range (numTeams//2):
+        #for however many matches there are in the first round:
+        team1 = teamsList.pop(0)
+        #the first team in the match is the first team in the teams list
+        team2 = teamsList.pop(0)
+        #the second team in the match is the new first team in the teams list after the first team has been removed as it is popped
+        bracket[1][i+1][1] = team1
+        #In the first round of the bracket, the first team in each match in turn is set to the first team in the remaining teams list
+        bracket[1][i+1][2] = team2
+        #In the first round of the bracket, the second team in each match in turn is set to the new first team in the remaining teams list after team1 is popped
+
+    return db.addBrackets(str(bracket), session["Tournament"])
+    #this functions return adds the brackets dictionary to the bracket field as a string into the tournament with the current tournament's name
+
+@bracketDisplayBlueprint.route("/bracketDisplay")
+#creates the route for the bracketDisplay blueprint, allowing it to be accessed easily.
+def bracketDisplay():
+    #defines bracketDisplay function for the bracketDisplay blueprint
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = db.getBrackets(session["Tournament"])
+    #retrieves the record of the current tournament from the database
+    brackets = (results[4])
+    #sets brackets to be the bracket field from the record containing all the info about the current tournament
+    brackets = eval(brackets)
+    #turns the string version of the brackets that is stored in the database back to its origional dictionary form
+    return brackets
+    #returns the dictionary version of the brackets
+
+    
