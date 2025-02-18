@@ -273,12 +273,10 @@ def generateViewCode():
     while results != None:
         #If the return from the database check for the new view code is not None, the new view code is already being used in the database. 
         #This means a new view code should be generated and checked for in the database so the while loop should continue
-        viewCode = str(random.randint(1,2))
+        viewCode = str(random.randint(100000,999999))
         #generates a random 6 digit number, makes it a string and assigns it to the variable viewCode
         results = db.checkViewCodes(viewCode)
         #assigns the return from the checkViewCodes database function when this 6 digit string is checked for and assigns it to the results variable
-        if results!=None:
-            print("This view code is ignored")
         
 
     db.addViewCode(viewCode, session["Tournament"])
