@@ -47,12 +47,12 @@ class DatabaseHandler:
             #Signals user has not been created successfully when function is called
 
 
-    # def dropUsers(self):
-    #     connection = sql.connect(self.name)
+    def dropUsers(self):
+        connection = sql.connect(self.name)
 
-    #     connection.execute("""DROP TABLE user;""")
+        connection.execute("""DROP TABLE tournament;""")
         
-    #     connection.close()
+        connection.close()
     #function used for testing
 
     def authenticateUser(self, username, password):
@@ -103,11 +103,13 @@ class DatabaseHandler:
                     numTeams integer NOT NULL,
                     active text,
                     bracket text,
+                    viewCode text,
                     FOREIGN KEY (username) REFERENCES user(username)
                     CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
                             );""")
         #execute previously designed sql statement on the database connection
         #active and bracket fields added to the database
+        #viewCode field added to the database
         connection.close()
         #close the database connection
 
@@ -118,11 +120,13 @@ class DatabaseHandler:
         try:
             #use try except loop to be able to handle errors
             connection.execute("""INSERT INTO tournament
-                VALUES (?,?,?,false,?)""",
-                (tournamentName,username,numTeams,bracket)
-                )
+                               (tournamentName,username,numTeams,active,bracket)
+                            VALUES (?,?,?,false,?)""",
+                            (tournamentName,username,numTeams,bracket)
+                            )
             #execute previously designed sql statement on the database connection
-            #whn adding the active and bracket fields, this SQL had to be updated too to allow data for these fields to be added to the tournament 
+            #when adding the active and bracket fields, this SQL had to be updated too to allow data for these fields to be added to the tournament 
+            #line 2 in the statement inserts the values into these specific fields, so it can ignore any other fields when inserting 
             connection.commit()
             #commit the changes to the database so they are stored permaneantly
             connection.close()
