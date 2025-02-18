@@ -3,6 +3,8 @@ from database import DatabaseHandler
 # import database and required flask modules
 import math
 #import math module so log2 can be performed for number of rounds
+import random
+#so randint can be used when generating the view code
 
 creationFormBlueprint = Blueprint("creationForm",__name__)
 #create a flask blueprint for the function to load the tournamentCreation page
@@ -24,6 +26,8 @@ bracketDisplayBlueprint = Blueprint("bracketDisplay",__name__)
 #create a flask blueprint for the function to retreive the bracket from the database
 tournamentDashboardBlueprint = Blueprint("tournamentDashboard",__name__)
 #create a flask blueprint for the function to load the tournament dashboard
+generateViewCodeBlueprint = Blueprint("generateViewCode",__name__)
+#create a flask blueprint for the function to load generate the unique view code and add it to the database
 
 
 @creationFormBlueprint.route("/creationForm")
@@ -253,5 +257,31 @@ def tournamentDashboard():
     #creates a link to the database, where appData.db is the database storing the enities
     db.updateActiveTrue(session["Tournament"])
     #updates the active field to be true in the database for the current tournament signifying the tournament has started
-    return render_template("tournamentDashboard.html")
+    return render_template("tournamentDashboard.html", viewCode = generateViewCode())
     #loads the tournamentDashboard html page 
+    #loads the page with the view code generated from the generateViewCode function passed in as "viewCode" so it can be displayed to the user
+
+
+@generateViewCodeBlueprint.route("/generateViewCode")
+#creates the route for the generateViewCode blueprint, allowing it to be accessed easily.
+def generateViewCode():
+    #defines generateViewCode function for the generateViewCode blueprint
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = "notnone"
+    #sets the results local variable to be a value that is not None so the while loop begins 
+    while results != None:
+        #If the return from the database check for the new view code is not None, the new view code is already being used in the database. 
+        #This means a new view code should be generated and checked for in the database so the while loop should continue
+        viewCode = str(random.randint(100000,999999))
+        #generates a random 6 digit number, makes it a string and assigns it to the variable viewCode
+        results = db.checkViewCodes(viewCode)
+        #assigns the return from the checkViewCodes database function when this 6 digit string is checked for and assigns it to the results variable
+        
+
+    db.addViewCode(viewCode, session["Tournament"])
+    #Once a unique view code is generated, this line calls the database function to add it to the database, assigning it to the current tournament
+
+    return viewCode
+    # returns the unique view code
+
