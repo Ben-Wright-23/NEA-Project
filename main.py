@@ -4,7 +4,7 @@ from database import DatabaseHandler
 from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
 from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
-from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint, tournamentDashboardBlueprint, generateViewCodeBlueprint
+from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint, tournamentDashboardBlueprint, generateViewCodeBlueprint, myTournamentsPageBlueprint, tournamentDashboardRedirectBlueprint, deleteTournamentBlueprint, teamsInputRedirectBlueprint, bracketViewRedirectBlueprint
 
 
 app = Flask(__name__)
@@ -61,5 +61,16 @@ app.register_blueprint(tournamentDashboardBlueprint)
 #registers the tournamentDashboardBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(generateViewCodeBlueprint)
 #registers the generateViewCodeBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(myTournamentsPageBlueprint)
+#registers the myTournamentsPageBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(deleteTournamentBlueprint)
+#registers the deleteTournamentBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(tournamentDashboardRedirectBlueprint)
+#registers the tournamentDashboardRedirectBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(teamsInputRedirectBlueprint)
+#registers the teamsInputRedirectBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(bracketViewRedirectBlueprint)
+#registers the bracketViewRedirectBlueprint in the Flask instance so it can be used when running the program in the web framework
+
 
 app.run(debug = True)
