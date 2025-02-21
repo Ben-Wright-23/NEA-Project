@@ -162,8 +162,9 @@ class DatabaseHandler:
             #if gthere was an error in the function, the connection will be closed and the function will return False
             
 
-    def getBrackets(self,tournamentName):
+    def getTournamentFields(self,tournamentName):
         #defines get bracket function
+        #name changed to getTournamentFields to better suit its multiple purposes
         try:
             connection = sql.connect(self.name)
             #connect to the database
@@ -254,3 +255,39 @@ class DatabaseHandler:
             return False
             #returns true signifying the viewCode has not been added to the current tournament successfully
 
+
+    def getTournaments(self,currentUser):
+        #defines getTournaments function, the current user trying to access their tournaments passed in
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            cursor = connection.cursor()
+            #creates a cursor to inspect one row of the table at a time
+            cursor.execute("""SELECT * FROM tournament WHERE username = ?;""",[currentUser])
+            #exectutes the previously designed SQL statement to select all tournaments where the username matches the given current user
+            results = cursor.fetchall()
+            #fetches all the tournaments that have a username matching the passed in username for the current user 
+            connection.close()
+            #close the connection to the database
+            return results
+            #returns all the tournaments and all the data in their fields, where the tournament's username matches the given current user
+        except Exception as e:
+            connection.close()
+            #close the connection to the database
+            print(e)
+            #print the error in the SQL statement if there has been one
+            return False
+            #returns false signifying the selection was unsuccessful
+            
+    def deleteTournament(self,tournamentName):
+        #defines deleteTournament function, with the tournament name of the tournament that needs to be deleted passed in
+        connection = sql.connect(self.name)
+        #connect to the database
+        connection.execute("""DELETE FROM tournament
+                            WHERE tournamentName = ? ;""",
+                            [tournamentName])
+        #exectutes the previously designed SQL statement to delete the tournament with a given tournament name
+        connection.commit()
+        #commit the deletion of the tournament to the database
+        connection.close()
+        #close the connection to the database
