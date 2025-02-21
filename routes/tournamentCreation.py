@@ -250,7 +250,7 @@ def bracketDisplay():
     #defines bracketDisplay function for the bracketDisplay blueprint
     db = DatabaseHandler("appData.db")
     #creates a link to the database, where appData.db is the database storing the enities
-    results = db.getBrackets(session["Tournament"])
+    results = db.getTournamentFields(session["Tournament"])
     #retrieves the record of the current tournament from the database
     brackets = (results[4])
     #sets brackets to be the bracket field from the record containing all the info about the current tournament
