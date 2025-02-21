@@ -36,3 +36,10 @@
     border: 1px dashed gray;
     /* Making simplistic aesthetic */
 }
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    /* Spaces the divisions within this class evenly and vertically */
+}
