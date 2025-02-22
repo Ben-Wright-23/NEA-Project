@@ -356,6 +356,14 @@ def teamsInputRedirect():
     #clears the team input error session so the teams input page appears blank
     session["Tournament"] = request.form["tournamentName"]
     #sets the Tournament session to be the tournament name value of the tournament that has been clicked on on the myTournaments html page
+    results = db.getTournamentFields(session["Tournament"])
+    #retrieves all the fields for the current tournament being dealt with
+    global numTeams
+    # makes the numTeams variable global so all functions can access it
+    numTeams = results[2]
+    #sets the numTeams variable to the third item in the list of fields for the current tournament as this represents the number of teams for the tournament
+    numTeams = int(numTeams)
+    #turns numTeams back to its origional integer form
     return redirect("/teamsInputPage")
     #redirects the user to the function to load the teams input page
 
@@ -369,6 +377,8 @@ def bracketViewRedirect():
     #sets the Tournament session to be the tournament name value of the tournament that has been clicked on on the myTournaments html page
     results = db.getTournamentFields(session["Tournament"])
     #sets results to be the list of fields from the database for the tournament with the tournament name of the value in the tournament session
+    global numTeams
+    #sets the numTeams variable global so any future functions needed can use the correct number of teams for the current tournament being dealt with
     numTeams = results[2]
     #sets numTeams to be the third value from the fields list as this represents that tournament's number of teams
     numTeams = int(numTeams)
@@ -379,3 +389,5 @@ def bracketViewRedirect():
     #turns the brackets back to their origional dictionary form
     return render_template("bracketView.html", brackets = brackets, numberOfRounds = int(math.log2(numTeams)))
     #loads the bracket view html page with the brackets for the tournament selected and number of rounds, which is derrived from the number of teams of the selected tournament, passed in with the page
+
+    
