@@ -268,9 +268,14 @@ def tournamentDashboard():
     #creates a link to the database, where appData.db is the database storing the enities
     db.updateActiveTrue(session["Tournament"])
     #updates the active field to be true in the database for the current tournament signifying the tournament has started
-    return render_template("tournamentDashboard.html", viewCode = generateViewCode())
-    #loads the tournamentDashboard html page 
-    #loads the page with the view code generated from the generateViewCode function passed in as "viewCode" so it can be displayed to the user
+    results = db.getTournamentFields(session["Tournament"])
+    #retrieves all the fields for the current tournament and sets the list retrieved to be results
+    viewCode = results[5]
+    #sets viewCode to be the sixth item in the list of current tournament fields as this represents the view code
+    viewCode = eval(viewCode)
+    #turns the view code back to its origional string form
+    return render_template("tournamentDashboard.html", viewCode = viewCode)
+    #loads the tournamentDashboard html page with the view code for the tournament from the database passed with it to be displayed
 
 
 @generateViewCodeBlueprint.route("/generateViewCode")
@@ -293,8 +298,8 @@ def generateViewCode():
     db.addViewCode(viewCode, session["Tournament"])
     #Once a unique view code is generated, this line calls the database function to add it to the database, assigning it to the current tournament
 
-    return viewCode
-    # returns the unique view code
+    return redirect ("/tournamentDashboard")
+    # redirect the user to the tournament dashboard page once the view code for the tournament has been added to the database
 
 
 @myTournamentsPageBlueprint.route("/myTournamentsPage")
