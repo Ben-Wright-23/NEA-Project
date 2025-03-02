@@ -104,12 +104,16 @@ class DatabaseHandler:
                     active text,
                     bracket text,
                     viewCode text,
+                    roundStartTimes text,
+                    matchDuration text,
+                    breakLength text,
                     FOREIGN KEY (username) REFERENCES user(username)
                     CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
                             );""")
         #execute previously designed sql statement on the database connection
         #active and bracket fields added to the database
         #viewCode field added to the database
+        #roundStartTimes, matchDuration and breakLength fields added to the database
         connection.close()
         #close the database connection
 
@@ -291,3 +295,28 @@ class DatabaseHandler:
         #commit the deletion of the tournament to the database
         connection.close()
         #close the connection to the database
+
+    def addFixtureInfo(self, startTimes, duration, breakLength, tournamentName):
+        #defines addFixtureInfo function, with the round start times, match duration and break length to be added passed in as well as the tournament they should be assigned to
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            connection.execute("""UPDATE tournament 
+                               SET roundStartTimes = ?, matchDuration = ?, breakLength = ?
+                               WHERE tournamentName = ?;
+                               """,(startTimes,duration,breakLength,tournamentName))
+            #exectutes the previously designed SQL statement to add the round start times, match duration and break length to the current tournament
+            connection.commit()
+            #commit the addition of the round start times, match duration and break length to the database
+            connection.close()
+            #close the connection to the database
+            return True
+            #returns true signifying the round start times, match duration and break length have been added to the current tournament successfully
+        except:
+            #if there has been an error in the SQL statement
+            connection.close()
+            #close the connection to the database
+            return False
+            #returns true signifying the round start times, match duration and break length have not been added to the current tournament successfully
+
+            
