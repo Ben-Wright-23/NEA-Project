@@ -16,6 +16,8 @@ fixtureInfoInputBlueprint = Blueprint("fixtureInfoInput",__name__)
 #create a flask blueprint for the function to load hhandle the user inputs to the fixture info input page and add the calculated fixture information to the database
 fixtureInfoInputPageBlueprint = Blueprint("fixtureInfoInputPage",__name__)
 #create a flask blueprint for the function to load the fixture info input page
+scoresInputBlueprint = Blueprint("scoresInput",__name__)
+#create a flask blueprint for the function to handle the user's score inputs and add these scores to the database, assigned to the correct matches
 
 
 @liveBracketViewPageBlueprint.route("/liveBracketViewPage")
@@ -51,11 +53,24 @@ def fixturesPage():
     #loads the fixtures page, with the brackets passed in as tournament, round start times as roundStartTimes, match duration as matchDuration and break length as breakLength
 
 @scoresInputPageBlueprint.route("/scoresInputPage")
-#creates the route for the scoresInputPage blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
+#creates the route for the scoresInputPage blueprint, allowing it to be accessed easily.
 def scoresInputPage():
     #defines scoresInputPage function for the scoresInputPage blueprint
-    return render_template("scoresInput.html")
-    #loads the scores input page
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = db.getTournamentFields(session["Tournament"])
+    #sets results to be the list of fields from the database for the current tournament 
+    brackets = results[4]
+    #sets brackets to be the fifth value from the fields list as this represents that tournament's brackets
+    brackets = eval(brackets)
+    #turns the brackets back to its origional dictionary form
+    matchScores = results[9]
+    #sets matchScores to be the tenth value from the fields list as this represents that tournament's bracket with match scores added
+    matchScores = eval(matchScores)
+    #turns the matchScores back to their origional dictionary form
+    return render_template("scoresInput.html", tournament = brackets, matchScores = matchScores)
+    #loads the scores input page with the brackets and matchscores passed in so parts of them can be displayed
+
 
 @fixtureInfoInputBlueprint.route("/fixtureInfoInput", methods = ["POST"])
 #creates the route for the fixtureInfoInputBlueprint blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
@@ -151,3 +166,57 @@ def fixtureInfoInputPage():
     return render_template("fixtureInfoInput.html", error = session["FixtureInfoInputError"])
     #loads the Fixture Info Input html page, with any errors occured when completing the form on this page passed in to be displayed 
 
+@scoresInputBlueprint.route("/scoresInput", methods = ["POST"])
+#creates the route for the scoresInput blueprint, allowing it to be accessed easily.
+def scoresInput():
+    #defines scoresInput function for the scoresInput blueprint
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = db.getTournamentFields(session["Tournament"])
+    #sets results to be the list of fields from the database for the current tournament
+    brackets = results[4]
+    #sets brackets to be the fith value from the fields list as this represents that tournament's brackets
+    brackets = eval(brackets)
+    #turns the brackets back to their origional dictionary form
+    team1Score = request.form["score1"]
+    #takes the score the user has entered for the first team in the match and sets it to team1Score
+    team2Score = request.form["score2"]
+    #takes the score the user has entered for the second team in the match and sets it to team2Score
+    roundMatch = request.form["match"]
+    #takes the round and match the submit scores button has been round on, split by a comma
+    roundMatch = roundMatch.split(",")
+    #splits the round and match into a list, with the first item being the round and second the match
+    round = int(roundMatch[0])
+    #sets round to be the integer version of the first item in the round and match list, which is the round the user pressed the submit scores button in
+    match = int(roundMatch[1])
+    #sets match to be the integer version of the second item in the round and match list, which is the match the user pressed the submit scores button on
+    team1 = brackets[round][match][1]
+    #selects the team name of the first team in the match that has had submit scores button pressed on and sets it to team1
+    team2 = brackets[round][match][2]
+    #selects the team name of the second team in the match that has had submit scores button pressed on and sets it to team2
+    teamScore1 = []
+    #creates an empty list, called team score 1, that will store the team and that teams score in the match for the first team in the match
+    teamScore1.append(team1)
+    #append the first team of the match the submit scores button has been pressed on to the teamScore1 list
+    teamScore1.append(team1Score)
+    #append the first team of the match's score for the match that the submit scores button has been pressed on to the teamScore1 list
+    teamScore2 = []
+    #creates an empty list, called team score 2, that will store the team and that teams score in the match for the second team in the match
+    teamScore2.append(team2)
+    #append the second team of the match the submit scores button has been pressed on to the teamScore2 list
+    teamScore2.append(team2Score)
+    #append the second team of the match's score for the match that the submit scores button has been pressed on to the teamScore2 list
+    matchScores = brackets
+    #sets matchScores to be a copy of the brackets for the current tournament in the database
+    matchScores[round][match][1] = teamScore1
+    #sets the first item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 1 list, 
+    #containing both the team name and its score in the match
+    matchScores[round][match][2] = teamScore2
+    #sets the second item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 2 list, 
+    #containing both the team name and its score in the match
+    db.addMatchScores(str(matchScores), session["Tournament"])
+    #adds the string version of matchScores dictionary, containing the bracket + scores assigned to teams,
+    #to the matchScores field in the current tournament in the database
+    return redirect("/scoresInputPage")
+    #redirects the user to the function to reload the scores input page
+    
