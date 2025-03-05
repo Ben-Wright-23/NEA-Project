@@ -107,6 +107,7 @@ class DatabaseHandler:
                     roundStartTimes text,
                     matchDuration text,
                     breakLength text,
+                    matchScores text,
                     FOREIGN KEY (username) REFERENCES user(username)
                     CHECK (length(TournamentName)>4 AND length(TournamentName)<30)
                             );""")
@@ -114,6 +115,7 @@ class DatabaseHandler:
         #active and bracket fields added to the database
         #viewCode field added to the database
         #roundStartTimes, matchDuration and breakLength fields added to the database
+        #matchScores field added to the database
         connection.close()
         #close the database connection
 
@@ -319,4 +321,26 @@ class DatabaseHandler:
             return False
             #returns true signifying the round start times, match duration and break length have not been added to the current tournament successfully
 
-            
+    def addMatchScores(self, matchScores, tournamentName):
+        #defines addMatchScores function, with the match scores to be added passed in as well as the tournament they should be assigned to
+        try:
+            connection = sql.connect(self.name)
+            #connect to the database
+            connection.execute("""UPDATE tournament 
+                               SET matchScores = ?
+                               WHERE tournamentName = ?;
+                               """,(matchScores,tournamentName))
+            #executes the previously designed SQL statement to add the match scores to the current tournament
+            connection.commit()
+            #commit the addition of the match scores to the database
+            connection.close()
+            #close the connection to the database
+            return True
+            #returns true signifying the match scores have been added to the current tournament successfully
+        except:
+            #if there has been an error in the SQL statement
+            connection.close()
+            #close the connection to the database
+            return False
+            #returns false signifying the match scores have not been added to the current tournament successfully
+
