@@ -152,10 +152,11 @@ class DatabaseHandler:
             connection = sql.connect(self.name)
             #connect to the database
             connection.execute("""UPDATE tournament 
-                               SET bracket = ?
+                               SET bracket = ?, matchScores = ?
                                WHERE tournamentName = ?
-                               """,(bracket, tournamentName))
+                               """,(bracket, bracket, tournamentName))
             #execute the previously designed SQL statement
+            #adds the brackets to the match scores field too so it has a base store of all the matches so the scores can be added to them
             connection.commit()
             #commit the changes to the database
             connection.close()
@@ -165,7 +166,7 @@ class DatabaseHandler:
         except:
             connection.close()
             return False
-            #if gthere was an error in the function, the connection will be closed and the function will return False
+            #if there was an error in the function, the connection will be closed and the function will return False
             
 
     def getTournamentFields(self,tournamentName):
