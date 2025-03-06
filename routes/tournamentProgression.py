@@ -206,8 +206,8 @@ def scoresInput():
     #append the second team of the match the submit scores button has been pressed on to the teamScore2 list
     teamScore2.append(team2Score)
     #append the second team of the match's score for the match that the submit scores button has been pressed on to the teamScore2 list
-    matchScores = brackets
-    #sets matchScores to be a copy of the brackets for the current tournament in the database
+    matchScores = eval(results[9])
+    #sets matchScores to be the matchScores field in the current tournament in the database, turned back to its origional dictionary form
     matchScores[round][match][1] = teamScore1
     #sets the first item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 1 list, 
     #containing both the team name and its score in the match
@@ -219,4 +219,5 @@ def scoresInput():
     #to the matchScores field in the current tournament in the database
     return redirect("/scoresInputPage")
     #redirects the user to the function to reload the scores input page
+    
     
