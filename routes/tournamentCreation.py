@@ -266,6 +266,9 @@ def tournamentDashboard():
     #defines tournamentDashboard function for the tournamentDashboard blueprint
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
+    session["scoreInputError"] = ""
+    #defines the scoreInputError session or clears the session containing errors with score inputs,
+    #so they are not already present from other tournaments when the scores input page is loaded
     db = DatabaseHandler("appData.db")
     #creates a link to the database, where appData.db is the database storing the enities
     db.updateActiveTrue(session["Tournament"])
@@ -331,6 +334,9 @@ def tournamentDashboardRedirect():
     #defines tournamentDashboardRedirect function for the tournamentDashboardRedirect blueprint
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
+    session["scoreInputError"] = ""
+    #defines the scoreInputError session or clears the session containing errors with score inputs,
+    #so they are not already present from other tournaments when the scores input page is loaded
     db = DatabaseHandler("appData.db")
     #creates a link to the database, where appData.db is the database storing the enities
     session["Tournament"] = request.form["tournamentName"]

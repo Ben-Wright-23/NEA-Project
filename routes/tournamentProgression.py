@@ -68,8 +68,8 @@ def scoresInputPage():
     #sets matchScores to be the tenth value from the fields list as this represents that tournament's bracket with match scores added
     matchScores = eval(matchScores)
     #turns the matchScores back to their origional dictionary form
-    return render_template("scoresInput.html", tournament = brackets, matchScores = matchScores)
-    #loads the scores input page with the brackets and matchscores passed in so parts of them can be displayed
+    return render_template("scoresInput.html", tournament = brackets, matchScores = matchScores, error = session["scoreInputError"])
+    #loads the scores input page with the brackets, matchscores and any errors with the score input passed in so they can be displayed
 
 
 @fixtureInfoInputBlueprint.route("/fixtureInfoInput", methods = ["POST"])
@@ -181,43 +181,52 @@ def scoresInput():
     team1Score = request.form["score1"]
     #takes the score the user has entered for the first team in the match and sets it to team1Score
     team2Score = request.form["score2"]
-    #takes the score the user has entered for the second team in the match and sets it to team2Score
-    roundMatch = request.form["match"]
-    #takes the round and match the submit scores button has been round on, split by a comma
-    roundMatch = roundMatch.split(",")
-    #splits the round and match into a list, with the first item being the round and second the match
-    round = int(roundMatch[0])
-    #sets round to be the integer version of the first item in the round and match list, which is the round the user pressed the submit scores button in
-    match = int(roundMatch[1])
-    #sets match to be the integer version of the second item in the round and match list, which is the match the user pressed the submit scores button on
-    team1 = brackets[round][match][1]
-    #selects the team name of the first team in the match that has had submit scores button pressed on and sets it to team1
-    team2 = brackets[round][match][2]
-    #selects the team name of the second team in the match that has had submit scores button pressed on and sets it to team2
-    teamScore1 = []
-    #creates an empty list, called team score 1, that will store the team and that teams score in the match for the first team in the match
-    teamScore1.append(team1)
-    #append the first team of the match the submit scores button has been pressed on to the teamScore1 list
-    teamScore1.append(team1Score)
-    #append the first team of the match's score for the match that the submit scores button has been pressed on to the teamScore1 list
-    teamScore2 = []
-    #creates an empty list, called team score 2, that will store the team and that teams score in the match for the second team in the match
-    teamScore2.append(team2)
-    #append the second team of the match the submit scores button has been pressed on to the teamScore2 list
-    teamScore2.append(team2Score)
-    #append the second team of the match's score for the match that the submit scores button has been pressed on to the teamScore2 list
-    matchScores = eval(results[9])
-    #sets matchScores to be the matchScores field in the current tournament in the database, turned back to its origional dictionary form
-    matchScores[round][match][1] = teamScore1
-    #sets the first item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 1 list, 
-    #containing both the team name and its score in the match
-    matchScores[round][match][2] = teamScore2
-    #sets the second item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 2 list, 
-    #containing both the team name and its score in the match
-    db.addMatchScores(str(matchScores), session["Tournament"])
-    #adds the string version of matchScores dictionary, containing the bracket + scores assigned to teams,
-    #to the matchScores field in the current tournament in the database
-    return redirect("/scoresInputPage")
-    #redirects the user to the function to reload the scores input page
-    
+    # takes the score the user has entered for the second team in the match and sets it to team2Score
+    if team1Score.isdigit() == False or team2Score.isdigit() == False:
+        #checks that both the first and second team's score is an integer and not any type of decimal
+        session["scoreInputError"] = "Score must be integer value"
+        #if the inputs are not integers, there is an error which should be displayed to the user
+        return redirect("/scoresInputPage")
+        #reloads the scores input page, with this error displayed
+    else:
+        session["scoreInputError"] = ""
+        #if the score inputs are integers, there is no error with the score input
+        roundMatch = request.form["match"]
+        #takes the round and match the submit scores button has been round on, split by a comma
+        roundMatch = roundMatch.split(",")
+        #splits the round and match into a list, with the first item being the round and second the match
+        round = int(roundMatch[0])
+        #sets round to be the integer version of the first item in the round and match list, which is the round the user pressed the submit scores button in
+        match = int(roundMatch[1])
+        #sets match to be the integer version of the second item in the round and match list, which is the match the user pressed the submit scores button on
+        team1 = brackets[round][match][1]
+        #selects the team name of the first team in the match that has had submit scores button pressed on and sets it to team1
+        team2 = brackets[round][match][2]
+        #selects the team name of the second team in the match that has had submit scores button pressed on and sets it to team2
+        teamScore1 = []
+        #creates an empty list, called team score 1, that will store the team and that teams score in the match for the first team in the match
+        teamScore1.append(team1)
+        #append the first team of the match the submit scores button has been pressed on to the teamScore1 list
+        teamScore1.append(team1Score)
+        #append the first team of the match's score for the match that the submit scores button has been pressed on to the teamScore1 list
+        teamScore2 = []
+        #creates an empty list, called team score 2, that will store the team and that teams score in the match for the second team in the match
+        teamScore2.append(team2)
+        #append the second team of the match the submit scores button has been pressed on to the teamScore2 list
+        teamScore2.append(team2Score)
+        #append the second team of the match's score for the match that the submit scores button has been pressed on to the teamScore2 list
+        matchScores = eval(results[9])
+        #sets matchScores to be the matchScores field in the current tournament in the database, turned back to its origional dictionary form
+        matchScores[round][match][1] = teamScore1
+        #sets the first item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 1 list, 
+        #containing both the team name and its score in the match
+        matchScores[round][match][2] = teamScore2
+        #sets the second item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 2 list, 
+        #containing both the team name and its score in the match
+        db.addMatchScores(str(matchScores), session["Tournament"])
+        #adds the string version of matchScores dictionary, containing the bracket + scores assigned to teams,
+        #to the matchScores field in the current tournament in the database
+        return redirect("/scoresInputPage")
+        #redirects the user to the function to reload the scores input page
+        
     
