@@ -18,6 +18,8 @@ fixtureInfoInputPageBlueprint = Blueprint("fixtureInfoInputPage",__name__)
 #create a flask blueprint for the function to load the fixture info input page
 scoresInputBlueprint = Blueprint("scoresInput",__name__)
 #create a flask blueprint for the function to handle the user's score inputs and add these scores to the database, assigned to the correct matches
+drawProgressionBlueprint = Blueprint("drawProgression",__name__)
+#create a flask blueprint for the function to handle the penalty winner inputs that occur when draws are entered for scores
 
 
 @liveBracketViewPageBlueprint.route("/liveBracketViewPage")
@@ -174,14 +176,13 @@ def scoresInput():
     #creates a link to the database, where appData.db is the database storing the enities
     results = db.getTournamentFields(session["Tournament"])
     #sets results to be the list of fields from the database for the current tournament
-    brackets = results[4]
-    #sets brackets to be the fith value from the fields list as this represents that tournament's brackets
-    brackets = eval(brackets)
-    #turns the brackets back to their origional dictionary form
+    matchScores = eval(results[9])
+    #sets matchScores to be the matchScores field in the current tournament in the database, turned back to its origional dictionary form   
     team1Score = request.form["score1"]
     #takes the score the user has entered for the first team in the match and sets it to team1Score
     team2Score = request.form["score2"]
-    # takes the score the user has entered for the second team in the match and sets it to team2Score
+    #takes the score the user has entered for the second team in the match and sets it to team2Score
+
     if team1Score.isdigit() == False or team2Score.isdigit() == False:
         #checks that both the first and second team's score is an integer and not any type of decimal
         session["scoreInputError"] = "Score must be integer value"
@@ -190,7 +191,7 @@ def scoresInput():
         #reloads the scores input page, with this error displayed
     else:
         session["scoreInputError"] = ""
-        #if the score inputs are integers, there is no error with the score input
+        #otherwise, there have been no error with the score input so this session is set to nothing
         roundMatch = request.form["match"]
         #takes the round and match the submit scores button has been round on, split by a comma
         roundMatch = roundMatch.split(",")
@@ -199,9 +200,9 @@ def scoresInput():
         #sets round to be the integer version of the first item in the round and match list, which is the round the user pressed the submit scores button in
         match = int(roundMatch[1])
         #sets match to be the integer version of the second item in the round and match list, which is the match the user pressed the submit scores button on
-        team1 = brackets[round][match][1]
+        team1 = matchScores[round][match][1]
         #selects the team name of the first team in the match that has had submit scores button pressed on and sets it to team1
-        team2 = brackets[round][match][2]
+        team2 = matchScores[round][match][2]
         #selects the team name of the second team in the match that has had submit scores button pressed on and sets it to team2
         teamScore1 = []
         #creates an empty list, called team score 1, that will store the team and that teams score in the match for the first team in the match
@@ -215,18 +216,100 @@ def scoresInput():
         #append the second team of the match the submit scores button has been pressed on to the teamScore2 list
         teamScore2.append(team2Score)
         #append the second team of the match's score for the match that the submit scores button has been pressed on to the teamScore2 list
-        matchScores = eval(results[9])
-        #sets matchScores to be the matchScores field in the current tournament in the database, turned back to its origional dictionary form
+        if team1Score > team2Score:
+            teamScore1.append("W")
+            teamScore2.append("L")
+            #If Team1 has scored more goals than team 2, append W to teamScore1 and L to teamScore2
+        elif team1Score == team2Score:
+            teamScore1.append("D")
+            teamScore2.append("D")
+            #If they have scored the same amount of goals scored, D is appended to both teamScore1 and teamScore2
+        else:
+            teamScore1.append("L")
+            teamScore2.append("W")
+            #Otherwise, it must be that team2 has scored more than team1, so append L to teamScore1 and W to teamScore2
         matchScores[round][match][1] = teamScore1
         #sets the first item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 1 list, 
         #containing both the team name and its score in the match
         matchScores[round][match][2] = teamScore2
         #sets the second item in the match that has had submit scores pressed on within the matchscores copy of brackets to be the teamScore 2 list, 
         #containing both the team name and its score in the match
+        if teamScore1[2] == "W":
+            if matchScores[round+1][(match+1)//2][1] == None:
+                matchScores[round+1][(match+1)//2][1] = team1
+            else:
+                matchScores[round+1][(match+1)//2][2] = team1
+            #adds team1 to the next available position in the adjacent match in the next round if team1 has won the match
+        elif teamScore2[2] == "W":
+            if matchScores[round+1][(match+1)//2][1] == None:
+                matchScores[round+1][(match+1)//2][1] = team2
+            else:
+                matchScores[round+1][(match+1)//2][2] = team2
+            #adds team2 to the next available position in the adjacent match in the next round if team2 has won the match
         db.addMatchScores(str(matchScores), session["Tournament"])
         #adds the string version of matchScores dictionary, containing the bracket + scores assigned to teams,
         #to the matchScores field in the current tournament in the database
         return redirect("/scoresInputPage")
         #redirects the user to the function to reload the scores input page
         
+    
+@drawProgressionBlueprint.route("/drawProgression", methods = ["POST"])
+#creates the route for the scoresInput blueprint, allowing it to be accessed easily.
+def drawProgression():
+    #defines scoresInput function for the scoresInput blueprint
+    session["scoreInputError"] = ""
+    #clears the session containing errors with score inputs, so they are not already present from other tournaments when the scores input page is loaded
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = db.getTournamentFields(session["Tournament"])
+    #sets results to be the list of fields from the database for the current tournament
+    matchScores = results[9]
+    #sets brackets to be the fith value from the fields list as this represents that tournament's brackets
+    matchScores = eval(matchScores)
+    #turns the brackets back to their origional dictionary form
+    penaltyWinner = request.form["penaltyWinner"]
+    #takes the team name the user has entered to be the penalty winner and sets it to penaltyWinner
+    roundMatch = request.form["roundMatch"]
+    #takes the round and match the submit scores button has been round on, split by a comma
+    roundMatch = roundMatch.split(",")
+    #splits the round and match into a list, with the first item being the round and second the match
+    round = int(roundMatch[0])
+    #sets round to be the integer version of the first item in the round and match list, which is the round the user pressed the submit scores button in
+    match = int(roundMatch[1])
+    #sets match to be the integer version of the second item in the round and match list, which is the match the user pressed the submit scores button on
+    team1 = matchScores[round][match][1][0]
+    #selects the team name of the first team in the match that has had submit scores button pressed on and sets it to team1
+    team2 = matchScores[round][match][2][0]
+    #selects the team name of the second team in the match that has had submit scores button pressed on and sets it to team2
+    if penaltyWinner == team1:
+        matchScores[round][match][1][2] = "W"
+        matchScores[round][match][2][2] = "L"
+        #if the users input is the same as the first team in the match's name,
+        #W is added to the third item in the list for the first team in the match and L is added to the third item in the list for the second team in the match
+        if matchScores[round+1][(match+1)//2][1] == None:
+            matchScores[round+1][(match+1)//2][1] = team1
+        else:
+            matchScores[round+1][(match+1)//2][2] = team1
+        #adds team1 to the next available position in the adjacent match in the next round if team1 has won the match
+    elif penaltyWinner == team2:
+        matchScores[round][match][1][2] = "L"
+        matchScores[round][match][2][2] = "W"
+        #if the users input is the same as the second team in the match's name,
+        #W is added to the third item in the list for the first team in the match and L is added to the third item in the list for the second team in the match
+        if matchScores[round+1][(match+1)//2][1] == None:
+            matchScores[round+1][(match+1)//2][1] = team2
+        else:
+            matchScores[round+1][(match+1)//2][2] = team2  
+        #adds team2 to the next available position in the adjacent match in the next round as team2 has won the match
+    else:
+        session["scoreInputError"] = "Team name entered for the penalty winner is not in the match"
+        #If the team name entered by the user for the penalty winner is not in the match, this error should be returned back to the user
+        return redirect("/scoresInputPage")
+        #redirects the user to the function to reload the scores input page, with this error passed in to be displayed
+    db.addMatchScores(str(matchScores), session["Tournament"])
+    #adds the string version of matchScores dictionary, containing the bracket + scores assigned to teams,
+    #to the matchScores field in the current tournament in the database
+    return redirect("/scoresInputPage")
+    #redirects the user to the function to reload the scores input page
+
     

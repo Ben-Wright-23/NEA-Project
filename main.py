@@ -5,7 +5,7 @@ from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
 from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
 from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint, tournamentDashboardBlueprint, generateViewCodeBlueprint, myTournamentsPageBlueprint, tournamentDashboardRedirectBlueprint, deleteTournamentBlueprint, teamsInputRedirectBlueprint, bracketViewRedirectBlueprint
-from routes.tournamentProgression import liveBracketViewPageBlueprint, fixturesPageBlueprint, scoresInputPageBlueprint, fixtureInfoInputBlueprint, fixtureInfoInputPageBlueprint, scoresInputBlueprint
+from routes.tournamentProgression import liveBracketViewPageBlueprint, fixturesPageBlueprint, scoresInputPageBlueprint, fixtureInfoInputBlueprint, fixtureInfoInputPageBlueprint, scoresInputBlueprint, drawProgressionBlueprint
 
 app = Flask(__name__)
 #Creates an instance of flask to register blueprints to
@@ -85,5 +85,7 @@ app.register_blueprint(fixtureInfoInputPageBlueprint)
 #registers the fixtureInfoInputPageBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(scoresInputBlueprint)
 #registers the scoresInputBlueprint in the Flask instance so it can be used when running the program in the web framework
+app.register_blueprint(drawProgressionBlueprint)
+#registers the drawProgressionBlueprint in the Flask instance so it can be used when running the program in the web framework
 
 app.run(debug = True)
