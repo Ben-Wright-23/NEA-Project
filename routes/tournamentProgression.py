@@ -26,8 +26,16 @@ drawProgressionBlueprint = Blueprint("drawProgression",__name__)
 #creates the route for the liveBracketViewPage blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def liveBracketViewPage():
     #defines liveBracketViewPage function for the liveBracketViewPage blueprint
-    return render_template("liveBracketView.html")
-    #loads the live bracket view page
+    db = DatabaseHandler("appData.db")
+    #creates a link to the database, where appData.db is the database storing the enities
+    results = db.getTournamentFields(session["Tournament"])
+    #sets results to be the list of fields from the database for the current tournament 
+    matchScores = eval(results[9])
+    #sets matchScores to be the dictionary version of the tenth value from the fields list as this represents that tournament's bracket with match scores added
+    numRounds = int(math.log2(int(results[2])))
+    #sets numRounds to be log2 of numTeams, as this finds the number of rounds the tournament will contain
+    return render_template("liveBracketView.html", numberOfRounds = numRounds, matchScores = matchScores)
+    #loads the live bracket view page, with the number of rounds and matchScores passed in
 
 @fixturesPageBlueprint.route("/fixturesPage")
 #creates the route for the fixturesPage blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
