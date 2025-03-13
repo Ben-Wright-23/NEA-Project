@@ -102,6 +102,8 @@ def authenticateUser():
 #creates route for the deleteAccount blueprint, so it can be redirected to easily.
 def deleteAccount():
     #defines function
+    session["viewCodeInputError"] = ""
+    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
     accountDeletionError = session.get("accountDeletionError") if session.get("accountDeletionError") else ""
     #If the accountDeletionError session contains something, this becomes the accountDeletionError, otherwise the accountDeletionError is blank
     return render_template("deleteAccount.html", error = accountDeletionError)

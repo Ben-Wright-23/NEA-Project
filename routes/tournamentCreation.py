@@ -45,6 +45,8 @@ bracketViewRedirectBlueprint = Blueprint("bracketViewRedirect",__name__)
 #creates the route for the creationForm blueprint, allowing it to be accessed easily
 def creationForm():
     #defines function to load creationForm page
+    session["viewCodeInputError"] = ""
+    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
     session["teamInputError"] = ""
     #resets any errors possibly still being displayed from previous tournaments
     session["teamDeletionError"] = ""
@@ -188,6 +190,9 @@ def clearTeams():
 #creates the route for the bracketView blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def bracketView():
     #defines bracket view function for the bracketView blueprint
+    session["Viewing"] = False
+    #sets the viewing session to false so when the tournament dashboard is loaded from the bracketView page when a tournament is being created,
+    #all functions are displayed as it is the tournament organiser accessing the tournament
     if len(teams)< numTeams:
         #if the user entered less teams to the teams list than they specified the number of teams in their tournament would be:
         session["teamInputError"] = "Not enough teams entered" 
@@ -264,6 +269,8 @@ def bracketDisplay():
 #creates the route for the tournamentDashboard blueprint, allowing it to be accessed easily.
 def tournamentDashboard():
     #defines tournamentDashboard function for the tournamentDashboard blueprint
+    session["viewCodeInputError"] = ""
+    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
     session["scoreInputError"] = ""
@@ -329,6 +336,11 @@ def generateViewCode():
 #creates the route for the myTournamentsPage blueprint, allowing it to be accessed easily.
 def myTournamentsPage():
     #defines myTournamentsPage function for the myTournamentsPage blueprint
+    session["viewCodeInputError"] = ""
+    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
+    session["Viewing"] = False
+    #sets the viewing session to false so if a tournament dashboard is loaded from the myTournaments page, 
+    #all functions are displayed as it is the tournament organiser accessing the tournament
     db = DatabaseHandler("appData.db")
     #creates a link to the database, where appData.db is the database storing the enities
     results = db.getTournaments(session["currentUser"])
@@ -341,6 +353,8 @@ def myTournamentsPage():
 #creates the route for the tournamentDashboardRedirect blueprint, allowing it to be accessed easily. Post method allows it to send data to the server
 def tournamentDashboardRedirect():
     #defines tournamentDashboardRedirect function for the tournamentDashboardRedirect blueprint
+    session["viewCodeInputError"] = ""
+    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
     session["scoreInputError"] = ""
