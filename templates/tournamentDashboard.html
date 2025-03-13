@@ -50,20 +50,30 @@
         {% if fixturesInfoInputted == "True" %}
         <div class = "text-center">
             <p><a class = "btn link-dark border mb-3 w-75" href = "/fixturesPage">Fixtures</a></p>
-            <!-- If the fixture information has already been inputted, this creates a centered button to redirect the user to the fixtures page, which contains a list of all fixtures used for scheduling -->
+            <!-- If the fixture information has already been inputted, this creates a centered button to redirect the user to the fixtures page, 
+             which contains a list of all fixtures used for scheduling -->
+        </div>
+        {% elif session["Viewing"] == True %}
+        <div class = "text-center">
+            <p>The fixture list has not yet been created by the tournament organiser</p>
+            <!-- If a tournament is being viewed but has not yet had its fixture information entered, 
+             displays this message telling viewing users the fixture information has not yet been inputted instead of the fixtures button -->
         </div>
         {% else %}
         <div class = "text-center">
             <p><a class = "btn link-dark border mb-3 w-75" href = "/fixtureInfoInputPage">Fixtures</a></p>
-            <!-- If the fixture information has not already been inputted, 
-            this creates a centered button to redirect the user to the fixtures information input page page, which contains a form to be filled out so the fixtures page can be generated -->
+            <!-- If the fixture information has not already been inputted, this creates a centered button to redirect the user to the fixtures information input page page, 
+             which contains a form to be filled out so the fixtures page can be generated -->
         </div>
         {% endif %}
-        <div class = "text-center">
-            <p><a class = "btn link-dark border mb-3 w-75" href = "/scoresInputPage">Scores Input</a></p>  
-            <!-- Creates a centered button to redirect the user to the scores input page, which contains the function to input scores for matches -->
-        </div>
-        
+
+        {% if session["Viewing"] == False %}
+        <!-- Only displays the score input button if the tournament is not being viewed, meaning viewing users cannot enter scores, only the tournament organiser -->
+            <div class = "text-center">
+                <p><a class = "btn link-dark border mb-3 w-75" href = "/scoresInputPage">Scores Input</a></p>  
+                <!-- Creates a centered button to redirect the user to the scores input page, which contains the function to input scores for matches -->
+            </div>
+        {% endif %}
         {% if matchScores[numberOfRounds][1][1][2] == "W" or matchScores[numberOfRounds][1][1][2] == "L" %}
         <!-- If the final winner of the tournament has been determined: -->
             {% if matchScores[numberOfRounds][1][1][2] == "W" %}
@@ -77,17 +87,23 @@
                 <!-- If the second team in the final has won the match, display the congratulations pop up congratulating this team on winning the tournament -->
             </div>
             {% endif %}
+            {% if session["Viewing"] == False %}
+            <!-- Only displays the end tournament button if the tournament is not being viewed, meaning viewing users cannot end the tournament, only the tournament organiser -->
             <div class = "text-end">
                 <!-- Displays the button on the right of the container -->
                 <p><a class = "btn link-dark border mb-3" href = "/endTournament">End Tournament</a></p>  
                 <!-- Displays the end tournament button as enabled and pressable as the final winner has been determined -->
             </div>
+            {% endif %}
         {% else %}
+            {% if session["Viewing"] == False %}
+            <!-- Only displays the end tournament button if the tournament is not being viewed, meaning viewing users cannot end the tournament, only the tournament organiser -->
             <div class = "text-end">
                 <!-- Displays the button on the right of the container -->
                 <p><a class = "btn link-dark border mb-3 disabled" href = "/endTournament">End Tournament</a></p>  
                 <!-- Displays the disabled end tournament button as the final winner has not yet been setermined -->
             </div>
+            {% endif %}
         {% endif %}
     </div>
     
