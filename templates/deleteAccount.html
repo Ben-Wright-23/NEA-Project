@@ -25,7 +25,9 @@
     <form action = "/deleteUser" method = "post">
         <!-- Creates the form that users can make inputs into. Sends inputs to the /deleteUser route -->
         <div class = "mb-3">
-            <label class = "form-label text-dark" for = "username">Enter your username to confirm account deletion: </label>
+            <!-- Adds a margin below -->
+            <label class = "form-label fs-4 fw-medium" for = "username">Enter your username to confirm account deletion: </label>
+            <!-- Labels the user deletion input box, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
             <input class = "form-control" type="text" name="username" id="username" required>
             <!-- Creates a labelled username confirmation input box. -->
         </div>

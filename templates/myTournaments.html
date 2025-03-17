@@ -22,86 +22,91 @@
         <!-- Creates the main heading, with it in the centre, with a margin below of 5 and have a more boldened font to emphasise it. -->
         <hr>
         <!-- Creates a horizontal line to separate the heading form the rest of the page -->
-        <div class = "mb-3">
-            <!-- Creates division the list will be in, with a bottom margin to seperate  -->
-            <label class = "text-dark mb-3">My Tournaments: </label><br>
-            <!-- Creates a label for the list so users can see whatr the list contontains, with a break at the end so it is on its own line -->
-            <ul class="list-group">
-            <!-- Creates an unordered list for the tournaments, the class list group makes use of boottrap to make the list look simplistic but modern -->
-            {% for i in tournaments %}
-            <li class="list-group-item" id = {{i[0]}}>
-                <!-- Will create list items for each tournament within the list of tournaments that is passed into the page -->
-                <!-- Setting the id to i[0] will make the id for the list item the name of the tournament it represents -->
-                <div style= "display: flex; justify-content: space-between;">
-                    <!-- Evenly spaces the divisions within this division horizontally through the list item so more details can be fit in a smaller space -->
-                    <div class="info">
-                        <!-- Creates a division for the tournament name and number of teams section of the list item. -->
-                         <!-- The class "info" is from my stylesheet and makes it so they can be stacked vertically and spread evenly in the vertical space available. -->
-                        <div class="my-1">
-                            <!-- Creates a division for the tournament name part of this info division with a top and bottom margin -->
-                            <p>Tournament Name: {{i[0]}}</p>  
-                            <!-- Displays the tournament name. The 0 selects tournament name from the this tournament in the sequence of tournaments from the list, the ith tournament's name -->
-                        </div>
-                        <div class="my-1">
-                            <!-- Creates a division for the number of teams part of this info division with a top and bottom margin -->
-                            <p>Number of teams: {{i[2]}}</p>
-                            <!-- Displays the number of teams. The 2 selects number of teams from the this tournament in the sequence of tournaments from the list, the ith tournament's number of teams -->
-                        </div>
+        <label class = "form-label fs-4 fw-medium mb-3">My Tournaments: </label><br>
+        <!-- Labels the teams in tournament list, with the form-label bootstrap styling, a larger bolder font to emphasise it and a margin below -->
+        <ul class="list-group mb-4">
+        <!-- Creates an unordered list for the tournaments, using the boostrap list group styling -->
+        {% for i in tournaments %}
+        <li class="list-group-item fs-5 list-group-item-primary navyBorder py-2" id = {{i[0]}}>
+            <!-- Will create list items for each tournament within the list of tournaments that is passed into the page -->
+            <!-- Setting the id to i[0] will make the id for the list item the name of the tournament it represents -->
+            <!-- Each team has the list group item bootstrap styling, a larger font size, a light blue background, a navy blue border defined by my styles CSS file and vertical padding within the border -->
+            <div class = "d-flex justify-content-between">
+                <!-- Spaces the divisions within this division horizontally through the list item so more details can be fit in a smaller space -->
+                <div class="d-flex flex-column justify-content-between">
+                    <!-- Creates a division for the tournament name and number of teams section of the list item, stacked vertically at the top and bottom of the list item -->
+                    <div class="my-1">
+                        <!-- Creates a division for the tournament name part of this info division with a vertical margin -->
+                        <p>Tournament Name: {{i[0]}}</p>  
+                        <!-- Displays the tournament name. The 0 selects tournament name from the this tournament in the sequence of tournaments from the list, the ith tournament's name -->
                     </div>
-                    {% if i[3]=="true" %}
-                    <div class="mt-2">
-                        <!-- This division makes it a part of the division that spaces the details evenly horizontally so will appear in the middle of the list item as it is the 2nd of 3 divisions -->
-                        <p style="color:lime">Active</p>
-                        <!-- If the active field of the current tournament being dealt with is = "true", the word active will be displayed in green as this ith tournament has been started -->
-                    </div>
-                    {% else %}
-                    <div class="mt-2">
-                        <!-- This division makes it a part of the division that spaces the details evenly horizontally so will appear in the middle of the list item as it is the 2nd of 3 divisions -->
-                        <p style="color:red">Inactive</p>
-                        <!-- If the active field of the current tournament being dealt with is not "true", the word Inactive will be displayed in red as this ith tournament has not been started -->
-                    </div>
-                    {% endif %}
-                    <!-- ends the if statement to decide whether the tournament is active or not -->
-                    <div>
-                        {% if i[3]=="true" %}
-                        <form action = "/tournamentDashboardRedirect" method = "post">
-                            <button class = "btn link-dark border my-1" name = "tournamentName" value = "{{i[0]}}">Go to tournament</button>
-                            <!-- If the tournament is active, the go to tournament button is displayed and when clicked will redirect the user to the tournament dashboard -->
-                            <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form  -->
-                            <!-- This means that the user can be redirected to the selected tournament's tournament dashboard -->
-                        </form> 
-                        {% elif i[4] == None %}
-                        <form action = "/teamsInputRedirect" method = "post">
-                            <button class = "btn link-dark border my-1" name = "tournamentName" value = "{{i[0]}}">Go to Teams Input</button>
-                            <!-- If the tournament has nothing in the brackets field, the go to teams input button is displayed and when clicked will redirect the user to the teams input page -->
-                            <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form  -->
-                            <!-- This means that the user can be redirected to the selected tournament's teams input page -->
-                        </form>
-                        {% else %}
-                        <form action = "/bracketViewRedirect" method = "post">
-                            <button class = "btn link-dark border my-1" name = "tournamentName" value = "{{i[0]}}">Go to Bracket View</button>
-                            <!-- If the tournament has got a value in the brackets field but is not active, the go to bracket view button is displayed and when clicked will redirect the user to the bracket view -->
-                            <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form -->
-                            <!-- This means that the user can be redirected to the selected tournament's bracket view -->
-                        </form>
-                        {% endif %}
-                        <!-- ends the if statement that decides which redirect button to display -->
-                        <form action = "/deleteTournament" method = "post">
-                            <button class = "btn link-dark border my-1" name = "deleteTournament" value = "{{i[0]}}">Delete Tournament</button>
-                            <!-- Displays the delete tournament button that will delete the selected tournament from the page and database -->
-                            <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form -->
-                            <!-- This ensures the tournament the user selected is deleted -->
-                        </form> 
+                    <div class="my-1">
+                        <!-- Creates a division for the number of teams part of this info division with a vertical margin -->
+                        <p>Number of teams: {{i[2]}}</p>
+                        <!-- Displays the number of teams. The 2 selects number of teams from the this tournament in the sequence of tournaments from the list, the ith tournament's number of teams -->
                     </div>
                 </div>
-            </li>
-            {% endfor %}
-            <!-- ends the for statement to cycle through each of the current user's tournaments -->
-            </ul>
-        </div>
-        <div class = "text-center mb-3">
-            <p><a class = "btn link-dark border mb-3 w-50" href = "/dashboard">Return to Dashboard</a></p>  
-            <!-- Creates the button to return the user to the dashboard, centrally and below the tournaments list -->
+                {% if i[3]=="true" %}
+                <div class="mt-2">
+                    <!-- This division makes it a part of the division that spaces the details evenly horizontally so will appear in the middle of the list item as it is the 2nd of 3 divisions -->
+                    <p style="color:rgb(0, 202, 0)"><b>Active</b></p>
+                    <!-- If the active field of the current tournament being dealt with is = "true", the word active will be displayed in green as this ith tournament has been started -->
+                </div>
+                {% else %}
+                <div class="mt-2">
+                    <!-- This division makes it a part of the division that spaces the details evenly horizontally so will appear in the middle of the list item as it is the 2nd of 3 divisions -->
+                    <p style="color:red"><b>Inactive</b></p>
+                    <!-- If the active field of the current tournament being dealt with is not "true", the word Inactive will be displayed in red as this ith tournament has not been started -->
+                </div>
+                {% endif %}
+                <!-- ends the if statement to decide whether the tournament is active or not -->
+                <div>
+                    {% if i[3]=="true" %}
+                    <form action = "/tournamentDashboardRedirect" method = "post">
+                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "tournamentName" value = "{{i[0]}}">Go to tournament</button>
+                        <!-- If the tournament is active, the go to tournament button is displayed and when clicked will redirect the user to the tournament dashboard -->
+                        <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form  -->
+                        <!-- This means that the user can be redirected to the selected tournament's tournament dashboard -->
+                        <!-- Button has a fixed width so all types of button in this column are the same width, has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and a vertical margin -->
+                    </form> 
+                    {% elif i[4] == None %}
+                    <form action = "/teamsInputRedirect" method = "post">
+                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "tournamentName" value = "{{i[0]}}">Go to Teams Input</button>
+                        <!-- If the tournament has nothing in the brackets field, the go to teams input button is displayed and when clicked will redirect the user to the teams input page -->
+                        <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form  -->
+                        <!-- This means that the user can be redirected to the selected tournament's teams input page -->
+                        <!-- Button has a fixed width so all types of button in this column are the same width, has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and a vertical margin -->
+                    </form>
+                    {% else %}
+                    <form action = "/bracketViewRedirect" method = "post">
+                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "tournamentName" value = "{{i[0]}}">Go to Bracket View</button>
+                        <!-- If the tournament has got a value in the brackets field but is not active, the go to bracket view button is displayed and when clicked will redirect the user to the bracket view -->
+                        <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form -->
+                        <!-- This means that the user can be redirected to the selected tournament's bracket view -->
+                        <!-- Button has a fixed width so all types of button in this column are the same width, has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and a vertical margin -->
+                    </form>
+                    {% endif %}
+                    <!-- ends the if statement that decides which redirect button to display -->
+                    <form action = "/deleteTournament" method = "post">
+                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "deleteTournament" value = "{{i[0]}}">Delete Tournament</button>
+                        <!-- Displays the delete tournament button that will delete the selected tournament from the page and database -->
+                        <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form -->
+                        <!-- This ensures the tournament the user selected is deleted -->
+                        <!-- Button has a fixed width so all types of button in this column are the same width, has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and a vertical margin -->
+                    </form> 
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        <!-- ends the for statement to cycle through each of the current user's tournaments -->
+        </ul>
+        <hr>
+        <!-- Seperates the page redirect button from the main section of the page -->
+        <div class="text-center mb-4">
+            <!-- Aligns button centrally with a margin below -->
+            <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-50 py-3 mt-3" href = "/dashboard">Return to Dashboard</a></p> 
+            <!-- Creates the redirect to dashboard button -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, smallshadow below, larger font size, width of 50% of the container and vertical padding and margin -->
         </div>
     </div>
 </body>
