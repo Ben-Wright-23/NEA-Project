@@ -24,30 +24,43 @@
     <!-- Creates a horizontal line to separate the heading form the rest of the page -->
     <form action = "/deleteUser" method = "post">
         <!-- Creates the form that users can make inputs into. Sends inputs to the /deleteUser route -->
-        <div class = "mb-3">
+        <div class = "mb-4">
             <!-- Adds a margin below -->
             <label class = "form-label fs-4 fw-medium" for = "username">Enter your username to confirm account deletion: </label>
             <!-- Labels the user deletion input box, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
-            <input class = "form-control" type="text" name="username" id="username" required>
-            <!-- Creates a labelled username confirmation input box. -->
+            <input class = "form-control form-control-lg border-primary shadow" type="text" name="username" id="username" required>
+            <!-- Creates the user deletion input box, using the form-control attribute to add a bundle of bootstrap styling, making it large, with a blue border and a shadow below -->
+            <!-- Is required to add validation to not allow null inputs -->
         </div>
-
-        <div>
-            <input class="btn w-100 mb-3 border" type="submit" value="Confirm">
+        <div class = "text-center mb-4">
+            <!-- Aligns button centrally with a margin below -->
+            <input class="btn btn-light border-primary shadow w-75 mb-3 fs-5" type="submit" value="Confirm">
             <!-- Creates a confirm button to send the entered data to the deleteUser function -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and a vertical margin -->
         </div>
-        
     </form>
-    <div class = "mb-3">
-        {{error}}
-        <!-- displays error message that the delete account function provides, displays it under the confirm button -->
+    <hr>
+    <!-- Seperates the page redirect button from the main section of the page -->
+    <div class="text-center mb-4">
+        <!-- Aligns button centrally with a margin below -->
+        <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-50 py-3 mt-3" href = "/dashboard">Return to Dashboard</a></p> 
+        <!-- Creates the redirect to dashboard button -->
+        <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below, larger font size,
+             width of 50% of the container and vertical padding and margin -->
     </div>
-
-    <div>
-        <p><a class = "btn link-dark border mb-3 " href = "/dashboard">Back to Dashboard</a></p>  
-        <!-- creates a button to return the user to the dashboard -->
+    {% if error != "" %}
+    <!-- If an error has occured with the account deletion -->
+    <hr>
+    <!-- Seperate the error message if there is one from the redirect button -->
+    <div class = "py-3">
+        <!-- Adds vertical padding -->
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            {{error}}
+            <!-- Makes a dismissable, red alert containing the account deleteion error message to be displayed. When dismissed, it will fade out -->
+        </div>
     </div>
-
+    {% endif %}
     </div>
 </body>
 </html>

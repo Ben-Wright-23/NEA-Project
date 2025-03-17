@@ -20,27 +20,28 @@
     <!-- Contains all the contents in a box with 5 padding to make it fit screeens well and look simplistic -->
         <div class = "mb-3" style= "display: flex; justify-content: space-between;">
             <!-- Evenly spaces the items within this division horizontally, for this, across the top of the page -->
-            <p style = "color:slategrey">View Code: {{viewCode}}</p>  
-            <!-- Displays the view code for this specific tournament in the top left of the page for users to share, grey as it is a background item  -->
+            <p style = "color:slategrey" class="fs-5">View Code: {{viewCode}}</p>  
+            <!-- Displays the view code for this specific tournament in the top left of the page for users to share, grey as it is a background item and with a slightly larger font size  -->
             <h1 class = "display-2 text-center mb-5 fw-medium">{{ session["Tournament"] }}</h1>
             <!-- Creates the main heading, with it in the centre, with a margin below of 5 and have a more boldened font to emphasise it. -->
             <!-- Current tournaments name being this heading to add personalisation -->
             <div class="dropdown">
                 <!-- Creates the division to create the dropdown within -->
-                <button class="btn border dropdown-toggle" type="button" data-toggle="dropdown">My Account</button>
-                <!-- Creates the button for the simple my account dropdown -->
+                <button class="btn btn-light border-primary-subtle shadow-sm btn-lg fs-4 dropdown-toggle" type="button" data-toggle="dropdown">My Account</button>
+                <!-- Creates the button for the my account dropdown -->
+                <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large and has a small shadow below -->
                 <ul class="dropdown-menu">
                 <!-- Creates the unordered list of items for the dropdown -->
-                    <li><a class="dropdown-item" href="/myTournamentsPage">My Tournaments</a></li>
-                    <!-- Creates the dropdown list item to redirect the user to the My Tournaments page -->
+                    <li><a class="dropdown-item fs-5 py-1" href="/myTournamentsPage">My Tournaments</a></li>
+                    <!-- Creates the dropdown list item with a slightly larger font size and vertical padding to redirect the user to the My Tournaments page -->
                     <li><hr class="dropdown-divider"></li>
                     <!-- Creates a division bewteen list items so it is clear where each button starts and ends -->
-                    <li><a class="dropdown-item" href="/dashboard">Return to Dashboard</a></li>
-                    <!-- Creates the dropdown list item to redirect the user to the main dashboard page -->
+                    <li><a class="dropdown-item fs-5 py-1" href="/dashboard">Return to Dashboard</a></li>
+                    <!-- Creates the dropdown list item with a slightly larger font size and vertical padding to redirect the user to the main dashboard page -->
                     <li><hr class="dropdown-divider"></li>
                     <!-- Creates a division bewteen list items so it is clear where each button starts and ends -->
-                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                    <!-- Creates the dropdown list item to log the user out of their account -->
+                    <li><a class="dropdown-item fs-5 py-1" href="/logout">Logout</a></li>
+                    <!-- Creates the dropdown list item with a slightly larger font size and vertical padding to log the user out of their account -->
                 </ul>
             </div>
         </div>
@@ -48,64 +49,87 @@
         <!-- Creates a horizontal line to separate the heading form the rest of the page -->
         
         <div class = "text-center">
-        <p><a class = "btn link-dark border mb-3 w-75" href = "/liveBracketViewPage">Bracket View</a></p>  
+        <!-- Centers the button -->
+        <p><a class = "btn btn-light border-primary btn-lg shadow py-3 my-3 w-75 fs-4" href = "/liveBracketViewPage">Bracket View</a></p>  
         <!-- Creates a centered button to redirect the user to the live bracket view page, which contains scores of matches -->
+        <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
         </div>
         {% if fixturesInfoInputted == "True" %}
         <div class = "text-center">
-            <p><a class = "btn link-dark border mb-3 w-75" href = "/fixturesPage">Fixtures</a></p>
+        <!-- Centers the button -->
+            <p><a class = "btn btn-light border-primary btn-lg shadow py-3 my-3 w-75 fs-4" href = "/fixturesPage">Fixtures</a></p>
             <!-- If the fixture information has already been inputted, this creates a centered button to redirect the user to the fixtures page, 
-             which contains a list of all fixtures used for scheduling -->
+                 which contains a list of all fixtures used for scheduling -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
         </div>
         {% elif session["Viewing"] == True %}
         <div class = "text-center">
-            <p>The fixture list has not yet been created by the tournament organiser</p>
+        <!-- Centers the button -->
+            <p class = "fs-5">The fixture list has not yet been created by the tournament organiser</p>
             <!-- If a tournament is being viewed but has not yet had its fixture information entered, 
-             displays this message telling viewing users the fixture information has not yet been inputted instead of the fixtures button -->
+                 displays this message telling viewing users the fixture information has not yet been inputted instead of the fixtures button -->
+            <!-- Has a slightly larger font size -->
         </div>
         {% else %}
         <div class = "text-center">
-            <p><a class = "btn link-dark border mb-3 w-75" href = "/fixtureInfoInputPage">Fixtures</a></p>
+        <!-- Centers the button -->
+            <p><a class = "btn btn-light border-primary btn-lg shadow py-3 my-3 w-75 fs-4" href = "/fixtureInfoInputPage">Fixtures</a></p>
             <!-- If the fixture information has not already been inputted, this creates a centered button to redirect the user to the fixtures information input page page, 
-             which contains a form to be filled out so the fixtures page can be generated -->
+                 which contains a form to be filled out so the fixtures page can be generated -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
         </div>
         {% endif %}
-
         {% if session["Viewing"] == False %}
         <!-- Only displays the score input button if the tournament is not being viewed, meaning viewing users cannot enter scores, only the tournament organiser -->
             <div class = "text-center">
-                <p><a class = "btn link-dark border mb-3 w-75" href = "/scoresInputPage">Scores Input</a></p>  
+            <!-- Centers the button -->
+                <p><a class = "btn btn-light border-primary btn-lg shadow py-3 my-3 w-75 fs-4" href = "/scoresInputPage">Scores Input</a></p>  
                 <!-- Creates a centered button to redirect the user to the scores input page, which contains the function to input scores for matches -->
+                <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
             </div>
         {% endif %}
         {% if matchScores[numberOfRounds][1][1][2] == "W" or matchScores[numberOfRounds][1][1][2] == "L" %}
         <!-- If the final winner of the tournament has been determined: -->
             {% if matchScores[numberOfRounds][1][1][2] == "W" %}
-            <div class="success p-3 mb-3 mx-5">
-                <p>Congratulations <strong>{{matchScores[numberOfRounds][1][1][0]}}</strong> on winning the tournament!</p>
+            <hr>
+            <!-- Seperates the congratulations pop up from the main section of the page -->
+            <div class="success p-3 m-5">
+                <!-- Has success class, defined in my CSS Stylesheet, which adds a light green background with green border. Also has padding and a margin -->
+                <p class = "my-auto py-1">Congratulations <strong>{{matchScores[numberOfRounds][1][1][0]}}</strong> on winning the tournament!</p>
                 <!-- If the first team in the final has won the match, display the congratulations pop up congratulating this team on winning the tournament -->
+                <!-- Aligns the text centrally vertically in the box with some intenral padding for the text -->
             </div>
             {% else %}
-            <div class="success p-3 mb-3 mx-5">
-                <p>Congratulations <strong>{{matchScores[numberOfRounds][1][2][0]}}</strong> on winning the tournament!</p>
+            <hr>
+            <!-- Seperates the congratulations pop up from the main section of the page -->
+            <div class="success p-3 m-5">
+                <!-- Has success class, defined in my CSS Stylesheet, which adds a light green background with green border. Also has padding and a margin -->
+                <p class = "my-auto py-1">Congratulations <strong>{{matchScores[numberOfRounds][1][2][0]}}</strong> on winning the tournament!</p>
                 <!-- If the second team in the final has won the match, display the congratulations pop up congratulating this team on winning the tournament -->
+                <!-- Aligns the text centrally vertically in the box with some intenral padding for the text -->
             </div>
             {% endif %}
             {% if session["Viewing"] == False %}
             <!-- Only displays the end tournament button if the tournament is not being viewed, meaning viewing users cannot end the tournament, only the tournament organiser -->
+            <hr>
+            <!-- Seperates the congratulations pop up from the main section of the page or the congratulations pop up -->
             <div class = "text-end">
                 <!-- Displays the button on the right of the container -->
-                <p><a class = "btn link-dark border mb-3" href = "/endTournament">End Tournament</a></p>  
+                <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg py-3 mt-3" href = "/endTournament">End Tournament</a></p>  
                 <!-- Displays the end tournament button as enabled and pressable as the final winner has been determined -->
+                <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below and vertical padding and margin -->
             </div>
             {% endif %}
         {% else %}
             {% if session["Viewing"] == False %}
             <!-- Only displays the end tournament button if the tournament is not being viewed, meaning viewing users cannot end the tournament, only the tournament organiser -->
+            <hr>
+            <!-- Seperates the end tournament button from the main section of the page or the congratulations pop up -->
             <div class = "text-end">
                 <!-- Displays the button on the right of the container -->
-                <p><a class = "btn link-dark border mb-3 disabled" href = "/endTournament">End Tournament</a></p>  
-                <!-- Displays the disabled end tournament button as the final winner has not yet been setermined -->
+                <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg py-3 mt-3 disabled" href = "/endTournament">End Tournament</a></p>  
+                <!-- Displays the disabled end tournament button as the final winner has not yet been determined -->
+                <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below and vertical padding and margin -->
             </div>
             {% endif %}
         {% endif %}
