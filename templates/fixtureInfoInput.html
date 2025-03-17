@@ -25,18 +25,24 @@
         <form action = "/fixtureInfoInput" method = "post">
             <!-- Creates the form for the user to enter fixture information, which will be sent to the fixtureInfoInput route, while the post method allows the inputs to be sent to the server side -->
             <div class = "mb-3">
-                <label class = "form-label text-dark" for = "startTime">Enter the start time of your tournament (24hr clock): </label>
-                <input class = "form-control" placeholder = "eg. 15:00" type="text" name="startTime" id="startTime" required>
-                <!-- Creates the labelled input for the user to enter their tournament start time, with a placeholder showing the user what format their input should be in and is required for the form to be submitted -->
+                <label class = "form-label fs-4 fw-medium" for = "startTime">Enter the start time of your tournament (24hr clock): </label>
+                <!-- Labels the tournament start time input box, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
+                <input class = "form-control form-control-lg border-primary shadow" placeholder = "eg. 15:00" type="text" name="startTime" id="startTime" required>
+                <!-- Creates the match duration input box, using the form-control attribute to add a bundle of bootstrap styling, making it large, with a blue border and a shadow below -->
+                <!-- Is required to add validation to not allow null inputs and has a placeholder showing the user what format their input should be in -->
             </div>
             <div class = "mb-3">
-                <label class = "form-label text-dark" for = "matchDuration">Enter the duration of matches for your tournament (in mins): </label>
-                <input class = "form-control" placeholder = "eg. 20" type="text" name="matchDuration" id="matchDuration" required>
-                <!-- Creates the labelled input for the user to enter their match duration, with a placeholder showing the user what format their input should be in and is required for the form to be submitted -->
+                <label class = "form-label fs-4 fw-medium" for = "matchDuration">Enter the duration of matches for your tournament (in mins): </label>
+                <!-- Labels the match duration input box, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
+                <input class = "form-control form-control-lg border-primary shadow" placeholder = "eg. 20" type="text" name="matchDuration" id="matchDuration" required>
+                <!-- Creates the tournament start time input box, using the form-control attribute to add a bundle of bootstrap styling, making it large, with a blue border and a shadow below -->
+                <!-- Is required to add validation to not allow null inputs and has a placeholder showing the user what format their input should be in -->
             </div>
-            <div class = "mb-3">
-                <label class = "form-label text-dark" for = "breakLength">Enter the length of breaks between matches for your tournament: </label><br>
-                <!-- Creates the label for the list of selection options for the length of breaks for the tournament -->
+            
+            <label class = "form-label fs-4 fw-medium" for = "breakLength">Enter the length of breaks between matches for your tournament: </label><br>
+            <!-- Labels the break length selection, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
+            <div class = "d-flex justify-content-around">
+            <!-- Space the options evenly horizontally through the container -->
                 <label class="form-check-label mx-5" for="5">5 Minutes</label>
                 <input class="form-check-input" type="radio" id="5" name="breakLength" value=5 required><br>
                 <!-- Creates first option for the break length, 5 mins, below the label -->
@@ -50,9 +56,11 @@
                 <input class="form-check-input" type="radio" id="20" name="breakLength" value=20>
                 <!-- Creates fourth option for the break length, 20 mins, below the previous option -->
             </div>
-            <div>
-                <input class="btn w-100 mb-3 border" id="mybtn" type="submit" value="Confirm">
+            <div class="text-center mb-3">
+                <!-- Aligns button centrally with a margin below -->
+                <input class="btn btn-light border-primary shadow w-75 mb-3 fs-5" type="submit" value="Confirm">
                 <!-- Creates the submit button for the form, which will send the inputs to the fixtureInfoInput route -->
+                 <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
             </div>
         </form>
         <div class = "mb-3">
