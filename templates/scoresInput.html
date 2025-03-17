@@ -36,8 +36,8 @@
                 <div class="d-flex flex-column justify-content-between">
                     <!-- Creates a division within each match, making each division within this division be displayed stacked vertically -->
                     <div class="m-2">
-                        <p>Match {{match}}</p>
-                        <!-- Displays a label for each match in the round in turn, stating its number in the sequence of matches for this round, with a margin -->
+                        <p class = "fw-medium fs-4">Match {{match}}</p>
+                        <!-- Displays a label for each match in the round in turn, stating its number in the sequence of matches for this round, has a larger font and is bold, with a margin added -->
                     </div>
                     {% if (matchScores[round][match][1]) is string and (matchScores[round][match][2]) is string %}
                         <!-- If scores have not already been entered for this specific match (if scores had been entered, the first item in the match would be a 
@@ -45,94 +45,109 @@
                         <form action="/scoresInput" method = "post">
                             <!-- Creates a form, redirecting to the scoresInput route, allowing the user to enter scores to this match -->
                             <div class="d-flex justify-content-start">
-                                <!-- Displays the content on the left most part of the page -->
+                                <!-- Positions all the content on the left of the list item -->
                                 <p class ="mx-3">{{matchScores[round][match][1]}}:</p>
                                 <!-- Makes the team name a label for the score input box -->
-                                <input style = "width: 40px;" class = "mb-3" type="number" id="score1" name="score1" min="0" required>
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" type="number" id="score1" name="score1" min="0" required>
                                 <!-- Creates the score input box, with type number to only allow numbers to be entered and to include the number incrementer in the input box, 
-                                    width 40 px to make the box small, as to only take enough space needed fr a number, and name score1 so it can be identified using flask requests -->
+                                    width 60px to make the box small, as to only take enough space needed for a number, and name score1 so it can be identified using flask requests -->
+                                <!-- Uses the form-control attribute to add a bundle of bootstrap styling, adds a blue border, a shadow below and a margin below --> 
                             </div>
                             <div class="d-flex justify-content-start">
                                 <!-- Displays the content on the left most part of the page -->
                                 <p class ="mx-3">{{matchScores[round][match][2]}}:</p>
                                 <!-- Makes the team name a label for the score input box -->
-                                <input style = "width: 40px;" class = "mb-3" type="number" id="score2" name="score2" min="0" required>
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" type="number" id="score2" name="score2" min="0" required>
                                 <!-- Creates the score input box, with type number to only allow numbers to be entered and to include the number incrementer in the input box, 
-                                    width 40 px to make the box small, as to only take enough space needed fr a number, and name score1 so it can be identified using flask requests -->
+                                    width 60 px to make the box small, as to only take enough space needed fr a number, and name score1 so it can be identified using flask requests -->
+                                <!-- Uses the form-control attribute to add a bundle of bootstrap styling, adds a blue border, a shadow below and a margin below -->
                             </div>
-                            <button class="btn border btn-sm w-100" type="submit" name = "match" id = "match" value="{{round}},{{match}}">Submit Score</button>
+                            <button class="btn btn-light border-primary shadow w-100 my-3 fs-5" type="submit" name = "match" id = "match" value="{{round}},{{match}}">Submit Score</button>
                             <!-- Displays the submit scores button across the width of the match list item, with value {round, match} so the flask blueprint can identify which match the scores 
                                     were inputted on, name match so it can be identified using flask requests and type submit so when it is pressed, all inputs can be sent to the scoresInput route -->
+                            <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 100% width of the container and vertical padding and margin -->
                         </form>
                     {% elif (matchScores[round][match][1]) == None or (matchScores[round][match][2]) == None %}
                         <!-- If either teams have not yet got an actual team name value and are instead None, 
                             scores should not be allowed to be inputted as there are not enough teams in the match yet for it to take place: -->
                         <form action="/scoresInput" method = "post">
                             <div class="d-flex justify-content-start">
+                                <!-- Positions all the content on the left of the list item -->
                                 <p class ="mx-3" >{{matchScores[round][match][1]}}:</p>
-                                <input style = "width: 40px;" class = "mb-3" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and first teams that can have scores inputted, while the input box is disabled so no values can be inputted -->
                             </div>
                             <div class="d-flex justify-content-start">
                                 <p class ="mx-3">{{matchScores[round][match][2]}}:</p>
-                                <input style = "width: 40px;" class = "mb-3" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and second teams that can have scores inputted, while the input box is disabled so no values can be inputted -->
                             </div>
-                            <button class="btn border w-100 btn-sm" type="submit" name = "match" id = "match" value="{{round}},{{match}}" disabled>Submit Score</button>
-                            <!-- Keeps a consistent aesthetic with the score input boxes and matches that can have scores inputted, while the button is disabled so it can't be pressed -->
+                            <button class="btn btn-light border-primary shadow w-100 my-3 fs-5" type="submit" name = "match" id = "match" value="{{round}},{{match}}" disabled>Submit Score</button>
+                            <!-- Keeps a consistent aesthetic with the submit score buttons of matches that can have scores inputted, while it is disabled so it can't be pressed -->
                         </form>
                     {% else %}
                         <!-- Otherwise, it must be that a score has already been inputted so no further scores should be allowed to be inputted and the final score for the match should be displayed -->
                         <form action="/scoresInput" method = "post">
                             <div style= "display: flex; justify-content: flex-start;">
+                                <!-- Positions all the content on the left of the list item -->
                                 {% if matchScores[round][match][1][2] == "W" %}
                                 <p class ="mx-3" >{{matchScores[round][match][1][0]}}:</p>
-                                <input style = "border: 2px solid lime; width: 40px;" class = "mb-3" placeholder="{{matchScores[round][match][1][1]}}" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "border: 2px solid rgb(0, 202, 0); width: 60px;" class = "form-control shadow mb-3" placeholder="{{matchScores[round][match][1][1]}}" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and first teams that can have scores inputted, while the input box is disabled so no values can be inputted
                                     and with a placeholder of the score for the first team in the match displayed in each of the disabled boxes -->
                                 <!-- If this team has won the match, the input box has a green border to show this team has won the match -->
                                 {% else %}
                                 <p class ="mx-3" >{{matchScores[round][match][1][0]}}:</p>
-                                <input style = "width: 40px;" class = "mb-3" placeholder="{{matchScores[round][match][1][1]}}" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" placeholder="{{matchScores[round][match][1][1]}}" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and first teams that can have scores inputted, while the input box is disabled so no values can be inputted
                                     and with a placeholder of the score for the first team in the match displayed in each of the disabled boxes -->
                                 <!-- Otherwise, the team has not won the match so there is no highlighting -->
                                 {% endif %}
                             </div>
                             <div style= "display: flex; justify-content: flex-start;">
+                                <!-- Positions all the content on the left of the list item -->
                                 {% if matchScores[round][match][2][2] == "W" %}
                                 <p class ="mx-3">{{matchScores[round][match][2][0]}}:</p>
-                                <input style = "border: 2px solid lime; width: 40px;" class = "mb-3 " placeholder="{{matchScores[round][match][2][1]}}" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "border: 2px solid rgb(0, 202, 0); width: 60px;" class = "form-control shadow mb-3" placeholder="{{matchScores[round][match][2][1]}}" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and second teams that can have scores inputted, while the input box is disabled so no values can be inputted
                                     and with a placeholder of the score for the second team in the match displayed in each of the disabled boxes -->
                                 <!-- If this team has won the match, the input box has a green border to show this team has won the match -->
                                 {% else %}
                                 <p class ="mx-3">{{matchScores[round][match][2][0]}}:</p>
-                                <input style = "width: 40px;" class = "mb-3" placeholder="{{matchScores[round][match][2][1]}}" disabled>
+                                <!-- Makes the team name a label for the score input box -->
+                                <input style = "width: 60px;" class = "form-control border-primary shadow mb-3" placeholder="{{matchScores[round][match][2][1]}}" disabled>
                                 <!-- Keeps a consistent aesthetic with the score input boxes and second teams that can have scores inputted, while the input box is disabled so no values can be inputted
                                     and with a placeholder of the score for the second team in the match displayed in each of the disabled boxes -->
                                 <!-- Otherwise, the team has not won the match so there is no highlighting -->
                                 {% endif %}
                             </div>
-                            <button class="btn border btn-sm w-100 mb-3" type="submit" name = "match" id = "match" value="{{round}},{{match}}" disabled>Submit Score</button>
-                            <!-- Keeps a consistent aesthetic with matches that can have scores inputted, while the scores input button is disabled so it can't be pressed -->
+                            <button class="btn btn-light border-primary shadow w-100 my-3 fs-5" type="submit" name = "match" id = "match" value="{{round}},{{match}}" disabled>Submit Score</button>
+                            <!-- Keeps a consistent aesthetic with the submit score buttons of matches that can have scores inputted, while it is disabled so it can't be pressed -->
                         </form>
                     {% endif %}
                     {% if matchScores[round][match][1][2] == "D" %}
                         <!-- If the match is currently stored as a draw: -->
+                        <hr>
+                        <!-- Seperates the penalty winner input from the submit score button -->
                         <div style= "display: flex; justify-content: flex-start;">
                             <form action = "/drawProgression" method = "post">
                                 <!-- Creates a form to send the inputs to the drawProgression route -->
                                 <label class = "form-label text-dark mx-3" for = "penaltyWinner">Enter Penalty Shootout Winner: </label>
                                 <!-- Labels the penalty winner input box, describing what should be entered -->
                                 <div class="input-group mb-3">
-                                    <input style = "width: 250px;" class = "mb-3 form-control" type = "text" name = "penaltyWinner" id = "penaltyWinner" placeholder="eg. Team 4" required>
+                                    <input style = "width: 250px;" class = "form-control form-control-lg border-primary shadow" type = "text" name = "penaltyWinner" id = "penaltyWinner" placeholder="eg. Team 4" required>
                                     <!-- Creates a text input box for the user to input the team name of the penalty shootout winner, as described by the placeholder -->
+                                    <!-- Uses the form-control attribute to add a bundle of bootstrap styling, makes it large, with a blue border, a shadow below and a fixed 250px width -->
                                     <div class="input-group-append">
-                                    <button class="btn border" type="submit" name = "roundMatch" id = "roundMatch" value="{{round}},{{match}}">Confirm</button>
+                                        <button class="btn btn-light btn-lg border-primary shadow" type="submit" name = "roundMatch" id = "roundMatch" value="{{round}},{{match}}">Confirm</button>
                                     </div>
-                                    <!-- Makes a confirm button attached to the input box to send the input to the drawProgression route as well as 
-                                        the round and match that this penalty winner has been entered for -->
+                                    <!-- Confirm button submits the input to the drawProgression route linked to by the form, as well as the round and match that this penalty winner has been entered for-->
+                                    <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and is attached to the penalty winner input box  -->
                                 </div>
                             </form>
                         </div>
