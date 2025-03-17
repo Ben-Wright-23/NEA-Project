@@ -38,37 +38,60 @@
                 <!-- Creates the tournament start time input box, using the form-control attribute to add a bundle of bootstrap styling, making it large, with a blue border and a shadow below -->
                 <!-- Is required to add validation to not allow null inputs and has a placeholder showing the user what format their input should be in -->
             </div>
-            
             <label class = "form-label fs-4 fw-medium" for = "breakLength">Enter the length of breaks between matches for your tournament: </label><br>
             <!-- Labels the break length selection, with the form-label bootstrap styling and a larger bolder font to emphasise it -->
-            <div class = "d-flex justify-content-around">
-            <!-- Space the options evenly horizontally through the container -->
-                <label class="form-check-label mx-5" for="5">5 Minutes</label>
-                <input class="form-check-input" type="radio" id="5" name="breakLength" value=5 required><br>
-                <!-- Creates first option for the break length, 5 mins, below the label -->
-                <label class="form-check-label mx-5" for="10">10 Minutes</label>
-                <input class="form-check-input" type="radio" id="10" name="breakLength" value=10><br>
-                <!-- Creates second option for the break length, 10 mins, below the previous option -->
-                <label class="form-check-label mx-5" for="15">15 Minutes</label>
-                <input class="form-check-input" type="radio" id="15" name="breakLength" value=15><br>
-                <!-- Creates third option for the break length, 15 mins, below the previous option -->
-                <label class="form-check-label mx-5" for="20">20 Minutes</label>
-                <input class="form-check-input" type="radio" id="20" name="breakLength" value=20>
-                <!-- Creates fourth option for the break length, 20 mins, below the previous option -->
+            <div class = "d-flex justify-content-around mb-3">
+            <!-- Space the options evenly horizontally through the container and adds a margin below -->
+                <div class="form-check form-check-inline my-3">
+                    <input style = "width:20px; height:20px;" class="form-check-input" type="radio" id="5" name="breakLength" value=5 required>
+                    <label class="form-check-label fs-5 mx-3" for="5">5 Minutes</label>
+                    <!-- Required makes it so any option must be selected -->
+                </div>
+                <div class="form-check form-check-inline my-3">
+                    <input style = "width:20px; height:20px;" class="form-check-input" type="radio" id="10" name="breakLength" value=10>
+                    <label class="form-check-label fs-5 mx-3" for="10">10 Minutes</label>
+                </div>
+                <div class="form-check form-check-inline my-3">
+                    <input style = "width:20px; height:20px;" class="form-check-input" type="radio" id="15" name="breakLength" value=15>
+                    <label class="form-check-label fs-5 mx-3" for="15">15 Minutes</label>
+                </div>
+                <div class="form-check form-check-inline my-3">
+                    <input style = "width:20px; height:20px;" class="form-check-input" type="radio" id="20" name="breakLength" value=20>
+                    <label class="form-check-label fs-5 mx-3" for="20">20 Minutes</label>
+                </div>
+                <!-- Creates labelled list of options displayed horizontally with margin vertically for users to select one option of what the break length of their tournament will be -->
+                <!-- Inputs have form check input bootstrap styling and a fixed size of 20px by 20px -->
+                <!-- Labels have form check label bootstrap styling, a larger font to emphasise it and a horizontal margin --> 
             </div>
             <div class="text-center mb-3">
                 <!-- Aligns button centrally with a margin below -->
                 <input class="btn btn-light border-primary shadow w-75 mb-3 fs-5" type="submit" value="Confirm">
                 <!-- Creates the submit button for the form, which will send the inputs to the fixtureInfoInput route -->
-                 <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
+                <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, larger font size, 75% width of the container and vertical padding and margin -->
             </div>
         </form>
-        <div class = "mb-3">
-            {{error}}
-            <!-- Displays any error with the user's inputs to the fixture information input form -->
+        <hr>
+        <!-- Seperates the page redirect button from the main section of the page -->
+        <div class="text-center mb-3">
+            <!-- Aligns button centrally with a margin below -->
+            <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-50 py-3 my-3" href = "/tournamentDashboard">Return to Tournament Dashboard</a></p> 
+            <!-- Creates the redirect to tournament dashboard button -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below, 
+               larger font size, width of 50% of the container and vertical padding and margin -->
         </div>
-        <p><a class = "btn link-dark border " href = "/tournamentDashboard">Return to Tournament Dashboard</a></p>
-        <!-- Creates the button to return the user to the tournament dashboard -->
+        {% if error != "" %}
+        <!-- If an error has occured with the fixture information input -->
+        <hr>    
+        <!-- Seperate the error message if there is one from the redirect button -->
+        <div class = "py-3">
+            <!-- Adds vertical padding -->
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                {{error}}
+                <!-- Makes a dismissable, red alert containing the fixture information input error message to be displayed. When dismissed, it will fade out -->
+            </div>
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>

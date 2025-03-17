@@ -63,7 +63,7 @@
                 <div>
                     {% if i[3]=="true" %}
                     <form action = "/tournamentDashboardRedirect" method = "post">
-                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "tournamentName" value = "{{i[0]}}">Go to tournament</button>
+                        <button style="width: 225px;" class = "btn btn-light btn-lg border-primary shadow my-1" name = "tournamentName" value = "{{i[0]}}">Go to Tournament</button>
                         <!-- If the tournament is active, the go to tournament button is displayed and when clicked will redirect the user to the tournament dashboard -->
                         <!-- The value being set to i[0] makes it so the tournament name of the tournament this button has been selected on can be accessed by the function the form redirects to, using request.form  -->
                         <!-- This means that the user can be redirected to the selected tournament's tournament dashboard -->

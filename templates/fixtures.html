@@ -24,77 +24,70 @@
         <!-- Creates a horizontal line to separate the heading form the rest of the page -->
         {% for i in matchScores %}
         <!-- will repeat the contents for every round in matchScores in turn -->
-        <label class = "text-dark mb-3">Round {{i}} Fixtures:</label>
-        <!-- Creates a label for list of fixtures for this round, with this round's number displayed in the label -->
-        <div class = "mb-3">
-            <!-- Creates a division for the list of fixtures for this round -->
-            <ul class="list-group">
-                <!-- Creates an unordered list to contain each match in the round and details of each match, bootstrap list-group class creates simplistic style -->
-                {% for match in matchScores[i] %}
-                <!-- Content repeats for each match in the currently being dealt with round -->
-                <li class="list-group-item">
-                    <!-- Creates the list item for each match in the round in turn, bootstrap list-group-item class creates simplistic style -->
-                    <div style= "display: flex; justify-content: space-between;" class = "mx-3">
-                        <!-- Creates a division for each match in the round in turn, in which each item will be displayed evenly spaced horizontally across the division -->
-                        <div style= "display: flex; justify-content: space-between; flex-direction: column;">
-                            <!-- Creates a division for the teams part of each match in the round in turn's details, 
-                                 in which each item will be displayed evenly spaced vertically through the division -->
-                            <div class="my-1">
-                                <p>Match {{match}}</p>  
-                                <!-- Displays a label for each match in the round in turn, stating its number in the sequence of matches for this round -->
-                            </div>
-                            {% if matchScores[i][match][1] is string %}
-                            <div class="my-1">
-                                <p>Team 1: {{matchScores[i][match][1]}}</p>  
-                                <!-- Displays and labels the first team in each match in the round in turn if the score for this team in the match has not been entered, 
-                                     taken from the matchScores stored in the database -->
-                            </div>
-                            {% else %}
-                            <div class="my-1">
-                                <p>Team 1: {{matchScores[i][match][1][0]}}</p>  
-                                <!-- Displays and labels the first team in each match in the round in turn if the score for this team in the match has been entered, 
-                                     taken from the matchScores stored in the database -->
-                            </div>
-                            {% endif %}
-                            <!-- If statement ensures the first team name for each match is displayed correctly, no matter if the score has been entered for the match or not -->
-
-                            {% if matchScores[i][match][1] is string %}
-                            <div class="my-1">
-                                <p>Team 2: {{matchScores[i][match][2]}}</p>
-                                <!-- Displays and labels the second team in each match in the round in turn if the score for this team in the match has not been entered, 
-                                     taken from the matchScores stored in the database -->
-                            </div>
-                            {% else %}
-                            <div class="my-1">
-                                <p>Team 2: {{matchScores[i][match][2][0]}}</p>
-                                <!-- Displays and labels the second team in each match in the round in turn if the score for this team in the match has been entered, 
-                                     taken from the matchScores stored in the database -->
-                            </div>
-                            {% endif %}
-                            <!-- If statement ensures the second team name for each match is displayed correctly, no matter if the score has been entered for the match or not -->
-                        </div>
-                        <div class="p-3 mt-3">
-                            <p>Total Match Duration (incl HT): </p>
-                            <p>{{matchDuration}} Minutes </p>
-                            <!-- Displays and labels the match duration of each match for this tournament, in the center of the match division -->
-                        </div>
-                        <div class = "p-3 mt-3">
-                            <p>Start Time:</p>
-                            <p>{{roundStartTimes[i-1]}}</p>
-                            <!-- Displays and labels the start time of each match in each round in turn, on the right of the match division -->
-                            <!-- i-1 because the list works from 0 while the rounds in the tournament work from 1 -->
-                        </div>
+        <label class = "form-label fs-4 fw-medium mb-3">Round {{i}} Fixtures:</label>
+        <!-- Labels the fixture list for each round in turn, with the round number displayed, with the form-label bootstrap styling, a larger bolder font to emphasise it and a margin below -->
+        <ul class="list-group mb-5">
+            <!-- Creates an unordered list to contain each match in the round and details of each match, bootstrap list-group class creates simplistic style, also adds a margin below -->
+            {% for match in matchScores[i] %}
+            <!-- Content repeats for each match in the currently being dealt with round -->
+            <li class="list-group-item fs-5 list-group-item-primary navyBorder py-2">
+                <!-- Creates the list item for each match in the round in turn -->
+                <!-- Each match has the list group item bootstrap styling, a larger font size, a light blue background, a navy blue border defined by my styles CSS file and vertical padding within the border -->
+                <div class="mx-2 mt-2">
+                    <p class = "fw-medium fs-4">Match {{match}}</p>  
+                    <!-- Displays a label for each match in the round in turn, stating its number in the sequence of matches for this round, has a larger font and is bold -->
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <!-- Creates a division for each match in the round in turn, in which each item will be displayed evenly spaced horizontally across the division -->
+                    <div class="p-2">
+                        <!-- Creates a division for the teams part of each match in the round in turn's details with padding -->
+                        {% if matchScores[i][match][1] is string or matchScores[i][match][1] == None %}
+                            <p>Team 1: {{matchScores[i][match][1]}}</p>  
+                            <!-- Displays and labels the first team in each match in the round in turn if the score for this team in the match has not been entered or the first team in the match team has not been added yet, 
+                                 taken from the matchScores stored in the database -->
+                        {% else %}
+                            <p>Team 1: {{matchScores[i][match][1][0]}}  </p>  
+                            <!-- Displays and labels the first team in each match in the round in turn if the score for this team in the match has been entered, 
+                                 taken from the matchScores stored in the database -->
+                        {% endif %}
+                        <!-- If statement ensures the first team name for each match is displayed correctly, no matter if the score has been entered for the match or not -->
+                        {% if matchScores[i][match][2] is string or matchScores[i][match][2] == None %}
+                            <p>Team 2: {{matchScores[i][match][2]}}</p>
+                            <!-- Displays and labels the second team in each match in the round in turn if the score for this team in the match has not been entered or the second team in the match team has not been added yet, 
+                                 taken from the matchScores stored in the database -->
+                        {% else %}
+                            <p>Team 2: {{matchScores[i][match][2][0]}}</p>
+                            <!-- Displays and labels the second team in each match in the round in turn if the score for this team in the match has been entered, 
+                                 taken from the matchScores stored in the database -->
+                        {% endif %}
+                        <!-- If statement ensures the second team name for each match is displayed correctly, no matter if the score has been entered for the match or not -->
                     </div>
-                </li>
-                {% endfor %}
-            
-            </ul>
-        </div>
+                    <div class="p-2">
+                        <!-- Creates a division for the match duration part of each match in the round in turn's details with padding -->
+                        <p>Total Match Duration (incl HT): </p>
+                        <p class="text-center">{{matchDuration}} Minutes </p>
+                        <!-- Displays and labels the match duration of each match for this tournament, in the center of the match division -->
+                    </div>
+                    <div class = "p-2">
+                        <!-- Creates a division for the start time part of each match in the round in turn's details with padding -->
+                        <p>Start Time:</p>
+                        <p class="text-center">{{roundStartTimes[i-1]}}</p>
+                        <!-- Displays and labels the start time of each match in each round in turn, on the right of the match division -->
+                        <!-- i-1 because the list works from 0 while the rounds in the tournament work from 1 -->
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
         {% endfor %}
-        
-        <div class = "text-center mb-3">
-            <p><a class = "btn link-dark border mb-3 w-50" href = "/tournamentDashboard">Return to Tournament Dashboard</a></p>  
-            <!-- Creates the button to return the user to the tournament dashboard, displayed centrally and below the fixtures list -->
+        <hr>
+        <!-- Seperates the page redirect button from the main section of the page -->
+        <div class="text-center mb-3">
+            <!-- Aligns button centrally with a margin below -->
+            <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-50 py-3 my-3" href = "/tournamentDashboard">Return to Tournament Dashboard</a></p> 
+            <!-- Creates the redirect to tournament dashboard button -->
+            <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below, 
+               larger font size, width of 50% of the container and vertical padding and margin -->
         </div>
     </div>
 </body>

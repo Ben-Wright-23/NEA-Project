@@ -49,3 +49,8 @@
     border: 3px solid #04AA6D;
 }
 /* Makes the tournament winner congratulations have a green background and left sided border */
+
+.navyBorder {
+    border: 1px solid #0900b8;
+    /* Gives the applied a navy border */
+}
