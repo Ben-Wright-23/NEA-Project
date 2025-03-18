@@ -8,8 +8,6 @@ createUserBlueprint = Blueprint("createUser",__name__)
 #create a flask blueprint for the function to handle the link between the interface and database and the displaying of errors with the signup
 authenticateUserBlueprint = Blueprint("authenticateUser",__name__)
 #create a flask blueprint for the function to check the entered details are in the database and to handle redirecting the user depending on the result
-deleteAccountBlueprint = Blueprint("deleteAccount",__name__)
-#create a flask blueprint for the function to load the account deletion confirmation page
 deleteUserBlueprint = Blueprint("deleteUser",__name__)
 #create a flask blueprint for the function to handle deleting the user depending on what they enter in the username confirmation
 logoutBlueprint = Blueprint("logout",__name__)
@@ -98,19 +96,6 @@ def authenticateUser():
         #otherwise reload the login page if an account with matching details was not found
 
 
-@deleteAccountBlueprint.route("/deleteAccount")
-#creates route for the deleteAccount blueprint, so it can be redirected to easily.
-def deleteAccount():
-    #defines function
-    session["viewCodeInputError"] = ""
-    #clears the view code input errors session so it does not remain present when returning to the user's dashboard
-    accountDeletionError = session.get("accountDeletionError") if session.get("accountDeletionError") else ""
-    #If the accountDeletionError session contains something, this becomes the accountDeletionError, otherwise the accountDeletionError is blank
-    return render_template("deleteAccount.html", error = accountDeletionError)
-    #loads the deleteAccount.html page, with the error being sent with it being the accountDeletionError
-
-
-
 @deleteUserBlueprint.route("/deleteUser", methods = ["post"])
 #creates route for the deleteUser blueprint, so it can be accessed by other parts of the program easily. 
 #Post method as handling requests from client to server
@@ -132,8 +117,8 @@ def deleteUser():
         #if the entered username does not match the current user's username
         session["accountDeletionError"] = "This is not your username"
         #there is an error with the account deletion so the error is set to a suitable message
-        return redirect("/deleteAccount")
-        #reload the delete account page
+        return redirect("/dashboard")
+        #reload the dashboard
 
 @logoutBlueprint.route("/logout")
 #creates route for the logout blueprint, so it can be accessed by other parts of the program easily

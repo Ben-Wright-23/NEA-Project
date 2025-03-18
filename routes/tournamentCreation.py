@@ -47,6 +47,8 @@ def creationForm():
     #defines function to load creationForm page
     session["viewCodeInputError"] = ""
     #clears the view code input errors session so it does not remain present when returning to the user's dashboard
+    session["accountDeletionError"] = ""
+    #clears the account deletion errors session so there is no error present when loading the user's dashboard
     session["teamInputError"] = ""
     #resets any errors possibly still being displayed from previous tournaments
     session["teamDeletionError"] = ""
@@ -271,6 +273,8 @@ def tournamentDashboard():
     #defines tournamentDashboard function for the tournamentDashboard blueprint
     session["viewCodeInputError"] = ""
     #clears the view code input errors session so it does not remain present when returning to the user's dashboard
+    session["accountDeletionError"] = ""
+    #clears the account deletion errors session so there is no error present when loading the user's dashboard
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
     session["scoreInputError"] = ""
@@ -338,6 +342,8 @@ def myTournamentsPage():
     #defines myTournamentsPage function for the myTournamentsPage blueprint
     session["viewCodeInputError"] = ""
     #clears the view code input errors session so it does not remain present when returning to the user's dashboard
+    session["accountDeletionError"] = ""
+    #clears the account deletion errors session so there is no error present when loading the user's dashboard
     session["Viewing"] = False
     #sets the viewing session to false so if a tournament dashboard is loaded from the myTournaments page, 
     #all functions are displayed as it is the tournament organiser accessing the tournament
@@ -355,6 +361,8 @@ def tournamentDashboardRedirect():
     #defines tournamentDashboardRedirect function for the tournamentDashboardRedirect blueprint
     session["viewCodeInputError"] = ""
     #clears the view code input errors session so it does not remain present when returning to the user's dashboard
+    session["accountDeletionError"] = ""
+    #clears the account deletion errors session so there is no error present when loading the user's dashboard
     session["FixtureInfoInputError"] = ""
     #defines the FixtureInfoInputError session or clears the session containing errors with fixture information inputs so they are not already present from other tournaments when the fixture information input page is loaded
     session["scoreInputError"] = ""

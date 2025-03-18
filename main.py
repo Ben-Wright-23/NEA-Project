@@ -3,7 +3,7 @@ from flask import Flask
 from database import DatabaseHandler
 from routes.home import homeBlueprint
 from routes.dashboard import dashboardBlueprint
-from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteAccountBlueprint, deleteUserBlueprint, logoutBlueprint
+from routes.userManagement import signupBlueprint, createUserBlueprint, authenticateUserBlueprint, deleteUserBlueprint, logoutBlueprint
 from routes.tournamentCreation import creationFormBlueprint, tournamentCreationBlueprint, teamsInputPageBlueprint,teamsInputBlueprint ,teamDeletionBlueprint, clearTeamsBlueprint, bracketViewBlueprint, bracketGenerationBlueprint, bracketDisplayBlueprint, tournamentDashboardBlueprint, generateViewCodeBlueprint, myTournamentsPageBlueprint, tournamentDashboardRedirectBlueprint, deleteTournamentBlueprint, teamsInputRedirectBlueprint, bracketViewRedirectBlueprint
 from routes.tournamentProgression import liveBracketViewPageBlueprint, fixturesPageBlueprint, scoresInputPageBlueprint, fixtureInfoInputBlueprint, fixtureInfoInputPageBlueprint, scoresInputBlueprint, drawProgressionBlueprint, endTournamentBlueprint
 from routes.tournamentViewing import viewTournamentBlueprint
@@ -32,8 +32,6 @@ app.register_blueprint(homeBlueprint)
 #registers the homeBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(authenticateUserBlueprint)
 #registers the authenticateUserBlueprint in the Flask instance so it can be used when running the program in the web framework
-app.register_blueprint(deleteAccountBlueprint)
-#registers the deleteAccountBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(deleteUserBlueprint)
 #registers the deleteUserBlueprint in the Flask instance so it can be used when running the program in the web framework
 app.register_blueprint(logoutBlueprint)
