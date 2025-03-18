@@ -4,8 +4,10 @@
     /* Makes the rounds spread horizontally */
     padding: 25px;
     margin: 25px;
-    border: 1px solid gray;
-    /* Making simplistic aesthetic */
+    border: 2px solid #0900b8;
+    background-color: #cfe2ff;
+    /* Is the primary-subtle colour from bootstrap */
+    /* Making an aesthetic to match the theme */
     justify-content: space-evenly;
     /* Spaces the round columns evenly in the bracket, will adapt depending on number of rounds */
 }
@@ -15,7 +17,7 @@
     flex-direction: column;
     /* Makes the matches in the round list vertically */
     padding: 10px;
-    /* Making simplistic aesthetic */
+    /* Spaces the rounds out */
     justify-content: space-evenly;
     /* Spaces the matches evenly through the round division */
 }
@@ -25,24 +27,14 @@
     flex-direction: column;
     /* Makes the players list vertically */
     padding: 10px;
-    border: 3px solid black;
+    border: 2px solid #0275d8;
+    /* Is the primary colour from bootstrap */
+    background-color: #FBFBFB;
+    /* Is the light colour from bootstrap */
     margin: 10px;
-    /* Making simplistic aesthetic */
+    /* Making an aesthetic to match the theme */
 }
 
-.player {
-    padding: 10px;
-    margin: 10px;
-    border: 1px dashed gray;
-    /* Making simplistic aesthetic */
-}
-
-.info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    /* Spaces the divisions within this class evenly and vertically */
-}
 
 .success {
     background-color: #ddffdd;

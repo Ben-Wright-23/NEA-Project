@@ -16,8 +16,8 @@
     <!-- Imports the stylesheet that will be accessed in this page -->
 </head>
 <body>
-  <div style="padding-right:100px; padding-left:100px;" class="py-5">
-    <!-- Makes padding all around the content, seperating it from the edge of the screen, not a container as otherwise bracket may not fit -->
+  <div class="container border p-5">
+    <!-- Creates a container for all content to be within, with a border to show this containment and 5 padding to space the contents from the border -->
     <h1 class = "display-2 text-center mb-5 fw-medium">Live Bracket View</h1>
     <!-- Creates the main heading, with it in the centre, with a margin below of 5 and have a more boldened font to emphasise it. -->
     <hr>
@@ -28,51 +28,40 @@
           <div class = "round"> 
             <!-- Loop creates as many rounds for what is required by the specific tournament and each round is made a division with the "round" styling in the stylesheet -->
             <h2 class = "text-center p-1">Round {{i+1}}</h2>
-            <!-- Gives each round a heading, with its round number for a tournament with any number of teams -->
+            <!-- Gives each round a heading, with its round number for a tournament with any number of teams, is centered within the round division and has padding -->
             {% for match in matchScores[i+1] %}
-            <div class = "match" style = "padding: 15px;">
-              <!-- Creates a division for each match within each round using the "match" styling, 
-                    uses the matchScores dictionary to access the matches for the specific tournament one by one -->
+            <div class = "match">
+              <!-- Creates a division for each match within each round using the "match" styling, uses the matchScores dictionary to access the matches for the specific tournament one by one -->
                 {% for player in matchScores[i+1][match] %}
                 <!-- Loops through the contents of the loop for every item in the current match being dealt with -->
                 {% if matchScores[i+1][match][player] is string or matchScores[i+1][match][player] == None %}
-                  <div class = "p-2 mx-2" style= "width: 200px; display: flex; justify-content: space-between;">
-                    <div>
-                      <button class="btn m-auto" style="background-color:transparent">{{matchScores[i+1][match][player]}}</button>
-                    </div>
-                    <!-- Displays team name -->
+                <!-- if the team has not yet got a score assigned or there is no team assigned yet -->
+                  <div class = "p-2 mx-2">
+                    <!-- Adds padding and a horizontal margin -->
+                    <button class="btn fs-5" style="background-color:transparent">{{matchScores[i+1][match][player]}}</button>
+                    <!-- Displays the team name with a larger font size, centered within its position in the match -->
                   </div>
-                  <!-- Adds the current player in the match into the matches division if it has not yet got scores assigned or don't yet have teams assigned -->
-                  <!-- Displays just the team name within its slot in the match -->
                 {% else %}
                   {% if matchScores[i+1][match][player][2] == "W" %}
-                    <div class = "p-1 mx-2" style= "border: 1px solid lime; width: 200px; display: flex; justify-content: space-between; ">
-                      <!-- Makes the team name and score be displayed on oposite ends of the width of the match division -->
-                        <div>
-                          <button class="btn m-auto" style="background-color:transparent; ">{{matchScores[i+1][match][player][0]}}</button>
-                          <!-- Displays team name -->
-                        </div>
-                        <div>
-                            <button class="btn m-auto" style="background-color:transparent">{{matchScores[i+1][match][player][1]}}</button>
-                            <!-- Displays score -->
-                        </div>
+                  <!-- If the score has been assigned to the match and the current team has won the match or drawn and then won the penalty shootout -->
+                    <div class = "p-2 mx-2" style= "border: 1px solid rgb(0, 202, 0); display: flex; justify-content: space-between; ">
+                      <!-- Makes the team name and score be displayed on oposite ends of the width of the match division, with a green border to show the team has won, with paddding and a horizontal margin -->
+                      <button class="btn fs-5 me-3" style="background-color:transparent; ">{{matchScores[i+1][match][player][0]}}</button>
+                      <!-- Displays the team name with a larger font size, and with a margin right to seperate the name from the score -->
+                      <button class="btn fs-5 ms-3" style="background-color:transparent">{{matchScores[i+1][match][player][1]}}</button>
+                      <!-- Displays the team's score with a larger font size, and with a margin left to seperate the name from the team name -->
                     </div>
-                    <!-- If the score has been assigned to the match and the team has won the match or drawn and then won the penalty shootout,
-                          the team name and score are displayed in this match with a green border to show this current team has won the match -->
+                    <!-- the team name and score are displayed in this match with a green border to show this current team has won the match -->
                   {% else %}
-                    <div class = "p-1 mx-2" style= "width: 200px; display: flex; justify-content: space-between; ">
-                      <!-- Makes the team name and score be displayed on oposite ends of the width of the match division -->
-                      <div>
-                        <button class="btn m-auto" style="background-color:transparent; ">{{matchScores[i+1][match][player][0]}}</button>
-                      </div>
-                      <!-- Displays team name -->
-                      <div>
-                          <button class="btn m-auto" style="background-color:transparent">{{matchScores[i+1][match][player][1]}}</button>
-                      </div>
-                      <!-- Displays score -->
+                  <!-- If the scores have been assigned to the match but the team has lost or drawn the match and lost the penalty shootout 
+                          or the penalty shootout has not yet taken place and the match was a draw -->
+                    <div class = "p-2 mx-2" style= "display: flex; justify-content: space-between; ">
+                      <!-- Makes the team name and score be displayed on oposite ends of the width of the match division, with no highlighting, with paddding and a horizontal margin -->
+                      <button class="btn fs-5 me-3" style="background-color:transparent; ">{{matchScores[i+1][match][player][0]}}</button>
+                      <!-- Displays the team name with a larger font size, and with a margin right to seperate the name from the score -->
+                      <button class="btn fs-5 ms-3" style="background-color:transparent">{{matchScores[i+1][match][player][1]}}</button>
+                      <!-- Displays the team's score with a larger font size, and with a margin left to seperate the name from the team name -->
                     </div>
-                    <!-- If the scores have been assigned to the match but the team has lost or drawn the match and lost the penalty shootout 
-                          or the penalty shootout has not yet taken place and the match was a draw, the team name and score are be displayed but without any highlighting -->
                   {% endif %}
                 {% endif %}
                 {% if player == 1 %}
@@ -89,10 +78,10 @@
         <!-- Seperates the page redirect button from the main section of the page -->
         <div class="text-center mb-3">
           <!-- Aligns button centrally with a margin below -->
-          <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-25 py-3 mt-3" href = "/tournamentDashboard">Return to Tournament Dashboard</a></p> 
+          <p><a class = "btn btn-light border-primary-subtle shadow-sm btn-lg w-50 py-3 mt-3" href = "/tournamentDashboard">Return to Tournament Dashboard</a></p> 
           <!-- Creates the redirect to tournament dashboard button -->
           <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, small shadow below, 
-               larger font size, width of 25% of the container and vertical padding and margin -->
+               larger font size, width of 50% of the container and vertical padding and margin -->
         </div>
   </div>
 </body>

@@ -22,7 +22,6 @@
       <!-- Creates the main heading, with it in the centre, with a margin below of 5 and have a more boldened font to emphasise it. -->
       <hr>
       <!-- Creates a horizontal line to separate the heading form the rest of the page -->
-      <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
       <div class = "bracket">
       <!-- Creates division for the bracket, with the "bracket" styling in the stylesheet -->
         {% for i in range(numberOfRounds) %}
@@ -32,19 +31,23 @@
           <!-- Gives each round a heading, with its round number for a tournament with any number of teams  -->
           {% for match in brackets[i+1] %}
           <div class = "match">
-              <!-- Creates a division for each match within each round using the "match" styling, uses the brackets dictionary to access the matches for the specific tournament one by one -->
+              <!-- Creates a division for each match within each round using the "match" styling in my CSS stylesheet, uses the brackets dictionary to access the matches for the specific tournament one by one -->
               {% for player in brackets[i+1][match] %}
-              <div class = "player">
-                  <button>{{brackets[i+1][match][player]}}</button>
-                  <!-- Puts the players into the matches division, using a division with the "player" styling. Accesses each player in turn from the brackets dictionary -->
+              <div class = "p-2 mx-4">
+                <!-- Adds padding and a horizontal margin for the team name -->
+                <button class="btn fs-5 m-auto" style="background-color:transparent">{{brackets[i+1][match][player]}}</button>
+                <!-- Displays the team name for each team in the match, displayed centrally in its section and with a larger font -->
               </div>
-            {% endfor %}
+              {% if player == 1 %}
+                <hr>
+                <!-- Adds a horizontal line between the teams in a match -->
+              {% endif %}
+          {% endfor %}
           </div>
           {% endfor %}
         </div>
         {% endfor %}
       </div>
-      <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
       <hr>
       <!-- Seperates the page redirect buttons from the main section of the page -->
       <div class = "d-flex justify-content-around">
