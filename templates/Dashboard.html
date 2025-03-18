@@ -84,9 +84,46 @@
         <p><a style="width: 400px;" class = "btn btn-light border-primary-subtle shadow-sm btn-lg py-3 mt-3" href = "/logout">Logout</a></p>  
         <!-- Creates a button for users to logout of their account, links to the logout function.  -->
         <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, smallshadow below, larger font size, fixed width of 400px and vertical padding and margin -->
-        <p><a style="width: 400px;" class = "btn btn-light border-primary-subtle shadow-sm btn-lg py-3 mt-3" href = "/deleteAccount">Delete your Account</a></p>
-        <!-- Creates a button for users to delete their account, links to the deleteAccount function -->
+        <p><a style="width: 400px;" class = "btn btn-light border-primary-subtle shadow-sm btn-lg py-3 mt-3" data-toggle="modal" data-target="#deleteAccountModal">Delete your Account</a></p>
+        <!-- Makes the delete account button that will toggle the deleteAccount modal to pop up when pressed -->
         <!-- Button has a very light grey background that becomes darker when hovered over, light blue border, is made large, smallshadow below, larger font size, fixed width of 400px and vertical padding and margin -->
+        <div class="modal fade text-center mb-3" id="deleteAccountModal">
+            <!-- Defines the modal as deleteAccountModal and fades it in when the button is pressed, also centers all the text in the body of the modal -->
+            <div class="modal-dialog">
+                <!-- Sets the proper width and margin of the modal -->
+                <div class="modal-content">
+                    <!-- Creates a division for the modal to store all its content within and styles the modal -->
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-4 fw-medium">Delete Account</h5>
+                        <!-- Creates the header section of the modal, with a heading for it displayed, with modal title styling, slightly bigger and slightly bolder -->
+                    </div>
+                    <div class="modal-body">
+                        <!-- Displays the content in the body of the modal -->
+                        <form action = "/deleteUser" method = "post">
+                            <!-- Creates the form that users can make inputs into. Sends inputs to the /deleteUser route -->
+                            <div class = "mb-3">
+                                <!-- Adds a margin below -->
+                                <label class = "form-label fw-medium" for = "deleteAccount">Enter your username to confirm account deletion: </label>
+                                <!-- Labels the user deletion input box, with the form-label bootstrap styling and a slightly bolder font to emphasise it -->
+                                <input class = "form-control border-primary shadow" type="text" name="username" id="username" required>
+                                <!-- Creates the user deletion input box, using the form-control attribute to add a bundle of bootstrap styling, with a blue border and a shadow below -->
+                                <!-- Is required to add validation to not allow null inputs -->
+                            </div>
+                            <div>
+                                <input class="btn btn-light border-primary shadow w-50 mb-3" type="submit" value="Confirm">
+                                <!-- Creates the submit button for the form, which when pressed, will send the entered data to the deleteUser route -->
+                                <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below, 50% width of the container and vertical padding and margin -->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class = "btn btn-light border-primary shadow mb-3" data-dismiss="modal">Close</button>
+                        <!-- Adds a close button to the footer of the modal so the modal can be closed and the dashboard will be fully displayed again -->
+                        <!-- Button has a very light grey background that becomes darker when hovered over, blue border, is made large, shadow below and vertical padding and margin -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     {% if error != "" %}
     <!-- If an error has occured with the view code input -->
@@ -98,6 +135,20 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             {{error}}
             <!-- Makes a dismissable, red alert containing the view code input error message to be displayed. When dismissed, it will fade out -->
+        </div>
+    </div>
+    {% endif %}
+
+    {% if deletionError != "" %}
+    <!-- If an error has occured with the account deletion -->
+    <hr>
+    <!-- Seperate the error message if there is one from the redirect button -->
+    <div class = "py-3">
+        <!-- Adds vertical padding -->
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            {{deletionError}}
+            <!-- Makes a dismissable, red alert containing the account deleteion error message to be displayed. When dismissed, it will fade out -->
         </div>
     </div>
     {% endif %}
