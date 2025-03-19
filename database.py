@@ -86,7 +86,11 @@ class DatabaseHandler:
         connection.execute("""DELETE FROM user
                         WHERE username = ? ;""",
                         [currentUser])
-        #execute previously designed sql statement on the database connection
+        # execute previously designed sql statement on the database connection
+        connection.execute("""DELETE FROM tournament
+                        WHERE username = ? ;""",
+                        [currentUser])
+        # #execute the sql statement to enforce referential integrity so that when a user is deleted, their tournaments are deleted too
         connection.commit()
         #commit the changes to the database so they are stored permaneantly
         connection.close()
