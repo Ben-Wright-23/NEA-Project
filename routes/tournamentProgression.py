@@ -193,7 +193,7 @@ def scoresInput():
     #takes the score the user has entered for the first team in the match and sets it to team1Score
     team2Score = request.form["score2"]
     #takes the score the user has entered for the second team in the match and sets it to team2Score
-
+    
     if team1Score.isdigit() == False or team2Score.isdigit() == False:
         #checks that both the first and second team's score is an integer and not any type of decimal
         session["scoreInputError"] = "Score must be integer value"

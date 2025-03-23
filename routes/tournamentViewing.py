@@ -29,3 +29,4 @@ def viewTournament():
         #sets the tournament session to be the tournament name, so the correct tournament dashboard can be displayed
         return redirect("/tournamentDashboard")
         #loads the restricted tournament dashboard for the tournament that has had its view code entered
+
